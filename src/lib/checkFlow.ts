@@ -13,6 +13,28 @@ export function assignColumn(checks: CheckResult[]): TrackerColumn {
   return "clear";
 }
 
+function joinList(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? "";
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
+
+export function buildSummaryLead(checks: CheckResult[], docType: DocType): string {
+  const docShort = docType === "letter" ? "letter" : "listing";
+  const blockers = checks.filter((c) => c.status === "blocker");
+  const warnings = checks.filter((c) => c.status === "warning");
+
+  if (!blockers.length && !warnings.length) {
+    return `Every rule Litmus can check lines up for this ${docShort}.`;
+  }
+
+  const titleFor = (c: CheckResult) => c.title.replace(/: can't be checked$/, "").toLowerCase();
+  const parts: string[] = [];
+  if (blockers.length) parts.push(`collides with ${joinList(blockers.map(titleFor))}`);
+  if (warnings.length) parts.push(`can't confirm ${joinList(warnings.map(titleFor))}`);
+  return `This ${docShort} ${parts.join(", and ")}.`;
+}
+
 export function summarizeChecks(checks: CheckResult[]): { label: string; isClear: boolean } {
   const nBlock = checks.filter((c) => c.status === "blocker").length;
   const nWarn = checks.filter((c) => c.status === "warning").length;
