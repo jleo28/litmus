@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import {
+  CurrentResult,
   DocType,
   EMPTY_FIELDS,
   EMPTY_STANDING,
@@ -41,6 +42,8 @@ interface AppState {
   flow: FlowState;
   auth: AuthState;
   savedChecks: SavedCheck[];
+  currentResult: CurrentResult | null;
+  setCurrentResult: (result: CurrentResult) => void;
 
   setRaw: (raw: string) => void;
   setDocType: (docType: DocType) => void;
@@ -66,6 +69,8 @@ export const useAppStore = create<AppState>()(
       flow: emptyFlow,
       auth: { signedIn: false, email: "" },
       savedChecks: [],
+      currentResult: null,
+      setCurrentResult: (currentResult) => set({ currentResult }),
 
       setRaw: (raw) =>
         set((s) => ({ flow: { ...s.flow, raw, docType: "" } })),

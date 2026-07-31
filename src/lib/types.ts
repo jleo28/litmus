@@ -48,6 +48,16 @@ export interface Standing {
 
 export const EMPTY_STANDING: Standing = { level: "", year: "", finalSemester: "" };
 
+export interface CurrentResult {
+  docType: DocType;
+  raw: string;
+  fields: Fields;
+  standing: Standing;
+  schoolId: string;
+  checks: CheckResult[];
+  completeness: CompletenessItem[];
+}
+
 export type TrackerBoard = "jd" | "offer";
 export type TrackerColumn = "no" | "maybe" | "clear";
 
