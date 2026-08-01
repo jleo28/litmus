@@ -66,6 +66,7 @@
   --color-label: var(--color-label);
   --color-accent: var(--color-accent);
   --color-accent-hover: var(--color-accent-hover);
+  --color-accent-bg: var(--color-accent-bg);
   --color-pass: var(--color-pass);
   --color-warning: var(--color-warning);
   --color-blocker: var(--color-blocker);
