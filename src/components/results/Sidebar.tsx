@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/lib/store/useAppStore";
 import { CurrentResult } from "@/lib/types";
-import { assignColumn } from "@/lib/checkFlow";
+import { buildSavedCheckPayload } from "@/lib/checkFlow";
 import { buildSummaryText } from "@/lib/summaryText";
 
 interface SidebarProps {
@@ -25,16 +25,7 @@ export default function Sidebar({ result }: SidebarProps) {
       router.push("/signin");
       return;
     }
-    saveCheck({
-      board: isLetter ? "offer" : "jd",
-      docType: result.docType,
-      fields: result.fields,
-      standing: result.standing,
-      schoolId: result.schoolId,
-      checks: result.checks,
-      completeness: result.completeness,
-      column: assignColumn(result.checks),
-    });
+    saveCheck(buildSavedCheckPayload(result));
     setSaved(true);
     router.push("/tracker");
   }

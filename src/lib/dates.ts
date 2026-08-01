@@ -30,6 +30,10 @@ export function daysBetween(a: Date, b: Date): number {
   return Math.round((b.getTime() - a.getTime()) / msPerDay);
 }
 
+export function formatShortDate(date: Date): string {
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
 export function formatDisplayDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "short",

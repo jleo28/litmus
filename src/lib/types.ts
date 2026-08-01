@@ -65,6 +65,7 @@ export interface SavedCheck {
   id: string;
   board: TrackerBoard;
   docType: DocType;
+  title: string;
   fields: Fields;
   standing: Standing;
   schoolId: string;
