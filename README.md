@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Litmus
 
-## Getting Started
+A web tool for F-1 international students. Paste a job listing or offer letter,
+confirm five extracted fields, and get a plain-English read on where that
+opportunity collides with your school's published CPT rules, before you invest
+weeks pursuing it.
 
-First, run the development server:
+Litmus is decisive about what it can compute (term dates, deadlines, hours,
+commute zone) and silent about what it can't. It never renders an overall
+"eligible / not eligible" verdict, that's a DSO's call.
+
+## Stack
+
+Next.js (App Router) + TypeScript + Tailwind CSS v4, with a small Zustand
+store persisted to `localStorage`. No backend: extraction, the rule engine,
+and mock auth all run client-side. See `docs/design/handoff.md` for the full
+design spec this build follows, and `docs/OPEN_QUESTIONS.md` for what's still
+outstanding before a real launch.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project layout
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app` — routes: `/` (paste), `/confirm`, `/results`, `/signin`, `/tracker`
+- `src/components` — screen-level and shared UI components
+- `src/lib/rules` — per-school CPT rule data and the check engine
+- `src/lib/extraction` — doc-type detection and field extraction (regex/keyword heuristics, not an ML model)
+- `src/lib/store` — the Zustand app store (flow state, mock auth, saved checks)
 
-## Learn More
+## Branching
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`main` is the release branch; `develop` is the integration branch. Work
+happens on `feature/*` branches opened as pull requests against `develop`.

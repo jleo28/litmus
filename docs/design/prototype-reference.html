@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=IBM+Plex+Sans:wght@400;450;500;600&family=IBM+Plex+Mono:wght@400;500&family=DM+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Geist+Mono:wght@400;500&family=Azeret+Mono:wght@400;500&family=Spline+Sans+Mono:wght@400;500&family=Red+Hat+Mono:wght@400;500&family=Sometype+Mono:wght@400;500&family=Martian+Mono:wght@400;500&family=Chivo+Mono:wght@400;500&family=Kode+Mono:wght@400;500&family=Reddit+Mono:wght@400;500&family=Inconsolata:wght@400;500&family=Source+Code+Pro:wght@400;500&family=Victor+Mono:wght@400;500&family=Noto+Sans+Mono:wght@400;500&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0}
+body{background:#f7f6f3;color:#1c1b19;font-family:"IBM Plex Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:oklch(0.48 0.075 250);text-decoration:none;border-bottom:1px solid oklch(0.48 0.075 250 / 0.3)}
+a:hover{color:oklch(0.38 0.085 250);border-bottom-color:oklch(0.38 0.085 250 / 0.6)}
+button,textarea,select,input{font-family:inherit}
+::placeholder{color:#a3a09a}
+@keyframes lit-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes lit-pulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes lit-word{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes lit-pop{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@media print{[data-noprint]{display:none !important}body{background:#fff}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;background:#f7f6f3;--mono:{{ monoFamily }};--monoW:{{ labelWeight }}">
+
+  <header data-noprint="1" style="border-bottom:1px solid rgba(28,27,25,.09);background:#fbfaf8">
+    <div style="max-width:1280px;margin:0 auto;padding:0 56px;height:62px;display:flex;align-items:center;gap:28px">
+      <span style="font-family:Newsreader,serif;font-size:23px;font-weight:500;letter-spacing:-0.015em">Litmus</span>
+      <nav style="margin-left:auto;display:flex;align-items:center;gap:22px">
+        <div style="display:flex;align-items:center;gap:10px;display:{{ stepsDisplay }}">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+            <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:10.5px;letter-spacing:.05em;white-space:nowrap;color:{{ s.color }}">{{ s.label }}</span>
+          </sc-for>
+        </div>
+        <button onClick="{{ onNavTracker }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:var(--mono);font-weight:var(--monoW);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;color:{{ trackerNavColor }};display:{{ trackerNavDisplay }}">Tracker</button>
+        <span style="font-size:12px;color:#a3a09a;white-space:nowrap;display:{{ accountDisplay }}">{{ accountLabel }}</span>
+      </nav>
+    </div>
+  </header>
+
+  <main style="flex:1;max-width:1280px;width:100%;margin:0 auto;padding:0 56px">
+
+    <sc-if value="{{ isInput }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:64px 0 48px;display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:64px;align-items:start;animation:lit-in .3s ease both">
+        <div style="min-width:0">
+          <h1 style="font-family:Newsreader,serif;font-size:44px;line-height:1.12;font-weight:400;letter-spacing:-0.02em;margin:0 0 14px">Check an offer against<br><span style="white-space:nowrap"><span style="font-style:italic;display:inline-block;transition:opacity .26s ease;opacity:{{ wordOpacity }}">{{ schoolWord }}</span> CPT rules.</span></h1>
+          <p style="font-size:15.5px;line-height:1.55;color:#5f5c56;margin:0 0 34px;max-width:52ch;text-wrap:pretty">Paste a listing or an offer letter. Litmus compares the hours, dates and location against your school's published rules and tells you exactly where they collide, before you spend weeks on it.</p>
+          <label for="offer" style="display:block;font-size:12.5px;font-weight:500;color:#3d3b37;margin:0 0 9px">Paste the job listing or offer letter</label>
+          <div style="position:relative">
+            <textarea id="offer" value="{{ raw }}" onChange="{{ onRaw }}" placeholder="Paste the full text here: title, employer, dates, hours, and work location." style="width:100%;height:252px;resize:vertical;padding:20px 22px;font-size:14px;line-height:1.6;color:#1c1b19;background:#fdfdfc;border:1px solid rgba(28,27,25,.16);border-radius:5px;outline:none;box-shadow:0 1px 2px rgba(28,27,25,.04)" style-focus="border-color:oklch(0.48 0.075 250 / 0.55);box-shadow:0 0 0 3px oklch(0.48 0.075 250 / 0.09)"></textarea>
+            <span style="position:absolute;right:14px;bottom:12px;font-family:var(--mono);font-weight:var(--monoW);font-size:10px;color:#a3a09a">{{ charCount }}</span>
+          </div>
+          <div style="min-height:26px;margin-top:11px">
+            <div style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:#5f5c56;display:{{ detectDisplay }}">
+              <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:3px;background:oklch(0.955 0.02 250);color:oklch(0.42 0.075 250);white-space:nowrap">{{ docChip }}</span>
+              <span style="color:#8d8a84">{{ detectNote }}</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:18px;margin:8px 0 0;flex-wrap:wrap">
+            <button onClick="{{ onUpload }}" style="display:flex;align-items:center;gap:7px;background:none;border:1px dashed rgba(28,27,25,.22);border-radius:4px;padding:7px 12px;font-size:12.5px;color:#5f5c56;cursor:pointer" style-hover="border-color:rgba(28,27,25,.4);color:#1c1b19">
+              <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:13px;line-height:1">↑</span>
+              <span>or upload a PDF / DOCX</span>
+            </button>
+            <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#8d8a84">
+              <span>Try a sample:</span>
+              <sc-for list="{{ sampleLinks }}" as="s" hint-placeholder-count="3">
+                <button onClick="{{ s.onPick }}" style="background:none;border:none;padding:0;font-size:12.5px;color:oklch(0.48 0.075 250);border-bottom:1px solid oklch(0.48 0.075 250 / 0.3);cursor:pointer" style-hover="color:oklch(0.38 0.085 250)">{{ s.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <aside style="background:#fbfaf8;border:1px solid rgba(28,27,25,.1);border-radius:6px;padding:24px">
+          <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:6px">Required</div>
+          <div style="font-family:Newsreader,serif;font-size:20px;font-weight:500;letter-spacing:-0.01em;margin-bottom:5px">Your class standing</div>
+          <p style="font-size:12.5px;line-height:1.5;color:#6f6c66;margin:0 0 22px">It changes the hours rule: final-semester students may qualify for full-time.</p>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div>
+              <div style="font-size:11.5px;font-weight:500;color:#3d3b37;margin-bottom:8px">1 · Level</div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <sc-for list="{{ levelOptions }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.onPick }}" style="text-align:left;padding:9px 12px;font-size:13px;border-radius:4px;cursor:pointer;background:{{ o.bg }};border:1px solid {{ o.border }};color:{{ o.color }};font-weight:{{ o.weight }}">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <sc-if value="{{ hasLevel }}" hint-placeholder-val="{{ false }}">
+              <div style="animation:lit-in .22s ease both">
+                <div style="font-size:11.5px;font-weight:500;color:#3d3b37;margin-bottom:8px">2 · Year</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <sc-for list="{{ yearOptions }}" as="o" hint-placeholder-count="4">
+                    <button onClick="{{ o.onPick }}" style="padding:7px 11px;font-size:12.5px;border-radius:4px;cursor:pointer;background:{{ o.bg }};border:1px solid {{ o.border }};color:{{ o.color }};font-weight:{{ o.weight }}">{{ o.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ hasYear }}" hint-placeholder-val="{{ false }}">
+              <div style="animation:lit-in .22s ease both">
+                <div style="font-size:11.5px;font-weight:500;color:#3d3b37;margin-bottom:4px">3 · Is this your final semester?</div>
+                <p style="font-size:11.5px;line-height:1.45;color:#8d8a84;margin:0 0 8px">Graduating at the end of it.</p>
+                <div style="display:flex;gap:6px">
+                  <sc-for list="{{ finalOptions }}" as="o" hint-placeholder-count="2">
+                    <button onClick="{{ o.onPick }}" style="padding:7px 18px;font-size:12.5px;border-radius:4px;cursor:pointer;background:{{ o.bg }};border:1px solid {{ o.border }};color:{{ o.color }};font-weight:{{ o.weight }}">{{ o.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+          <button onClick="{{ onCheck }}" disabled="{{ checkDisabled }}" style="width:100%;margin-top:26px;padding:13px;font-size:14px;font-weight:500;border-radius:4px;cursor:{{ checkCursor }};background:{{ checkBg }};color:{{ checkColor }};border:1px solid {{ checkBorder }}">Check this offer.</button>
+          <div style="font-size:11.5px;color:#a3a09a;margin-top:10px;text-align:center;min-height:16px">{{ checkHint }}</div>
+        </aside>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:150px 0;display:flex;flex-direction:column;align-items:center;gap:26px;animation:lit-in .3s ease both">
+        <div style="font-family:Newsreader,serif;font-size:26px;font-weight:400;letter-spacing:-0.01em">Comparing against your school's published rules…</div>
+        <div style="display:flex;flex-direction:column;gap:9px;width:340px">
+          <sc-for list="{{ loadingLines }}" as="l" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:11px;font-family:var(--mono);font-weight:var(--monoW);font-size:12px;color:{{ l.color }};opacity:{{ l.opacity }};animation:{{ l.anim }}">
+              <span>{{ l.mark }}</span><span>{{ l.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isConfirm }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:52px 0 48px;max-width:820px;animation:lit-in .3s ease both">
+        <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:10px">Step 2 of 3</div>
+        <h1 style="font-family:Newsreader,serif;font-size:34px;line-height:1.15;font-weight:400;letter-spacing:-0.02em;margin:0 0 12px">{{ confirmHeadline }}</h1>
+        <p style="font-size:15px;line-height:1.55;color:#5f5c56;margin:0 0 20px;max-width:56ch">Fix anything I got wrong before we check. Everything below is editable.</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:30px;flex-wrap:wrap">
+          <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:3px;background:oklch(0.955 0.02 250);color:oklch(0.42 0.075 250);white-space:nowrap">{{ docChip }}</span>
+          <span style="font-size:12.5px;color:#8d8a84">{{ docSwitchNote }}</span>
+          <button onClick="{{ onSwitchDoc }}" style="background:none;border:none;padding:0;font-size:12.5px;color:oklch(0.48 0.075 250);border-bottom:1px solid oklch(0.48 0.075 250 / 0.3);cursor:pointer" style-hover="color:oklch(0.38 0.085 250)">{{ docSwitchLabel }}</button>
+        </div>
+        <sc-if value="{{ hasMissing }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:12px;align-items:flex-start;background:oklch(0.975 0.03 85);border:1px solid oklch(0.86 0.06 85);border-radius:5px;padding:14px 16px;margin-bottom:26px">
+            <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:oklch(0.48 0.1 70);white-space:nowrap;padding-top:1px">Not found</span>
+            <span style="font-size:13.5px;line-height:1.5;color:#4a4640">{{ missingCopy }}</span>
+          </div>
+        </sc-if>
+        <div style="background:#fbfaf8;border:1px solid rgba(28,27,25,.1);border-radius:6px;overflow:hidden">
+          <sc-for list="{{ fieldRows }}" as="f" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;align-items:center;padding:17px 24px;border-bottom:1px solid rgba(28,27,25,.07)">
+              <div>
+                <div style="font-size:13px;font-weight:500;color:#3d3b37">{{ f.label }}</div>
+                <div style="font-size:11.5px;color:#8d8a84;margin-top:2px">{{ f.hint }}</div>
+              </div>
+              <div>
+                <input value="{{ f.value }}" onChange="{{ f.onChange }}" placeholder="{{ f.placeholder }}" style="width:100%;padding:10px 13px;font-size:13.5px;color:#1c1b19;background:{{ f.bg }};border:1px solid {{ f.border }};border-radius:4px;outline:none" style-focus="border-color:oklch(0.48 0.075 250 / 0.55);box-shadow:0 0 0 3px oklch(0.48 0.075 250 / 0.09)">
+                <div style="font-size:11.5px;margin-top:6px;color:oklch(0.48 0.1 70);display:{{ f.flagDisplay }}">{{ f.flagCopy }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;margin-top:28px">
+          <button onClick="{{ onRun }}" style="padding:13px 26px;font-size:14px;font-weight:500;border-radius:4px;cursor:pointer;background:#1c1b19;color:#fbfaf8;border:1px solid #1c1b19" style-hover="background:#332f2a">Run the check.</button>
+          <button onClick="{{ onRestart }}" style="background:none;border:none;padding:0;font-size:13px;color:#6f6c66;cursor:pointer;border-bottom:1px solid rgba(28,27,25,.2)" style-hover="color:#1c1b19">Back to the paste</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isResults }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:44px 0 48px;display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:56px;align-items:start;animation:lit-in .3s ease both">
+        <div style="min-width:0">
+
+          <div style="border-bottom:1px solid rgba(28,27,25,.14);padding-bottom:26px">
+            <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:14px">{{ resultKicker }}</div>
+            <div style="font-family:Newsreader,serif;font-size:40px;line-height:1.1;font-weight:400;letter-spacing:-0.022em;margin-bottom:10px;color:{{ summaryColor }}">{{ summaryCount }}</div>
+            <div style="font-size:16px;line-height:1.5;color:#3d3b37;max-width:56ch;text-wrap:pretty">{{ summaryLead }}</div>
+            <div style="display:flex;gap:11px;align-items:flex-start;margin-top:20px;padding:14px 16px;background:#fbfaf8;border:1px solid rgba(28,27,25,.12);border-radius:5px;max-width:62ch">
+              <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:12px;color:oklch(0.48 0.075 250);line-height:1.5">i</span>
+              <span style="font-size:13.5px;line-height:1.55;color:#4a4640">This checks your offer against your school's published CPT rules. <strong style="font-weight:600">It is not an eligibility decision</strong>, confirm with OIS before acting.</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ checkRows }}" as="c" hint-placeholder-count="5">
+              <div style="padding:24px 20px;margin-left:-20px;margin-right:-20px;border-bottom:1px solid rgba(28,27,25,.08);background:{{ c.rowBg }}">
+                <div style="display:grid;grid-template-columns:96px minmax(0,1fr);gap:22px;align-items:start">
+                  <div style="display:flex;flex-direction:column;gap:7px;padding-top:3px">
+                    <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;text-align:center;padding:4px 0;border-radius:3px;background:{{ c.chipBg }};color:{{ c.chipColor }};border:1px solid {{ c.chipBorder }}">{{ c.status }}</span>
+                    <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.06em;color:#a3a09a;text-align:center">{{ c.num }}</span>
+                  </div>
+                  <div style="min-width:0">
+                    <div style="font-family:Newsreader,serif;font-size:21px;font-weight:500;letter-spacing:-0.01em;margin-bottom:14px">{{ c.title }}</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(28,27,25,.1);border-radius:4px;background:#fdfdfc;overflow:hidden;max-width:640px">
+                      <div style="padding:11px 15px;border-right:1px solid rgba(28,27,25,.1)">
+                        <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:#a3a09a;margin-bottom:4px">{{ offerColLabel }}</div>
+                        <div style="font-size:13.5px;font-weight:500;color:{{ c.offerColor }}">{{ c.offer }}</div>
+                      </div>
+                      <div style="padding:11px 15px">
+                        <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:#a3a09a;margin-bottom:4px">Your school's rule</div>
+                        <div style="font-size:13.5px;font-weight:500;color:#3d3b37">{{ c.rule }}</div>
+                      </div>
+                    </div>
+                    <div style="display:flex;gap:9px;margin-top:13px;max-width:640px">
+                      <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:11px;color:#a3a09a;line-height:1.6">→</span>
+                      <span style="font-size:13.5px;line-height:1.6;color:#4a4640;text-wrap:pretty">{{ c.nextStep }}</span>
+                    </div>
+                    <button onClick="{{ c.onToggle }}" style="margin-top:13px;display:inline-flex;align-items:center;gap:7px;background:none;border:none;padding:0;font-family:var(--mono);font-weight:var(--monoW);font-size:11px;color:oklch(0.48 0.075 250);cursor:pointer;border-bottom:1px solid oklch(0.48 0.075 250 / 0.25)" style-hover="color:oklch(0.38 0.085 250)">
+                      <span>{{ c.sourceLabel }}</span>
+                      <span>{{ c.caret }}</span>
+                    </button>
+                    <div style="margin-top:12px;max-width:640px;background:#fbfaf8;border:1px solid rgba(28,27,25,.1);border-left:2px solid oklch(0.48 0.075 250 / 0.45);border-radius:0 4px 4px 0;padding:14px 16px;display:{{ c.sourceDisplay }}">
+                      <div style="font-family:Newsreader,serif;font-size:14.5px;font-weight:600;line-height:1.6;color:#2a2825">{{ c.sourceQuote }}</div>
+                      <div style="display:flex;align-items:center;gap:12px;margin-top:11px;font-family:var(--mono);font-weight:var(--monoW);font-size:10px;color:#8d8a84;flex-wrap:wrap">
+                        <span>{{ c.sourceCite }}</span>
+                        <a href="#">Open on your school's OIS site ↗</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:34px;border:1px solid rgba(28,27,25,.12);border-radius:6px;background:#fbfaf8;overflow:hidden">
+            <div style="padding:20px 24px 16px;border-bottom:1px solid rgba(28,27,25,.08)">
+              <div style="font-family:Newsreader,serif;font-size:21px;font-weight:500;letter-spacing:-0.01em">Offer-letter completeness</div>
+              <div style="font-size:13px;line-height:1.5;color:#6f6c66;margin-top:5px;max-width:62ch">{{ completenessLead }}</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr">
+              <sc-for list="{{ completeness }}" as="i" hint-placeholder-count="6">
+                <div style="display:flex;align-items:baseline;gap:11px;padding:13px 24px;border-bottom:1px solid rgba(28,27,25,.06);border-right:1px solid rgba(28,27,25,.06)">
+                  <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:11px;width:9px;flex:none;color:{{ i.markColor }}">{{ i.mark }}</span>
+                  <div>
+                    <div style="font-size:13.5px;color:#2a2825">{{ i.label }}</div>
+                    <div style="font-size:11.5px;margin-top:3px;color:{{ i.noteColor }};display:{{ i.noteDisplay }}">{{ i.note }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="margin-top:34px;border:1px solid rgba(28,27,25,.16);border-radius:6px;background:#fdfdfc;overflow:hidden">
+            <div style="padding:22px 24px 18px">
+              <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:12px">What now?</div>
+              <div style="font-family:Newsreader,serif;font-size:26px;line-height:1.2;font-weight:500;letter-spacing:-0.015em;margin-bottom:8px;max-width:34ch;text-wrap:pretty">{{ whatNowHeadline }}</div>
+              <div style="font-size:14px;line-height:1.55;color:#4a4640;max-width:60ch;text-wrap:pretty">{{ whatNowBody }}</div>
+            </div>
+            <div style="border-top:1px solid rgba(28,27,25,.08)">
+              <sc-for list="{{ whatNowSteps }}" as="w" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 24px;border-bottom:1px solid rgba(28,27,25,.06)">
+                  <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:10.5px;color:#a3a09a">{{ w.num }}</span>
+                  <div style="min-width:0">
+                    <div style="font-size:14px;font-weight:500;color:#1c1b19;margin-bottom:3px">{{ w.title }}</div>
+                    <div style="font-size:12.5px;line-height:1.5;color:#6f6c66;text-wrap:pretty">{{ w.detail }}</div>
+                  </div>
+                  <button onClick="{{ w.onAct }}" style="white-space:nowrap;padding:9px 15px;font-size:12.5px;font-weight:500;border-radius:4px;cursor:pointer;background:{{ w.btnBg }};color:{{ w.btnColor }};border:1px solid {{ w.btnBorder }};display:{{ w.btnDisplay }}">{{ w.action }}</button>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:14px 24px;background:#f4f3ef;font-size:12px;line-height:1.5;color:#6f6c66">{{ whatNowFoot }}</div>
+          </div>
+
+        </div>
+
+        <aside style="display:flex;flex-direction:column;gap:14px;position:sticky;top:24px">
+          <div data-noprint="1" style="background:#fbfaf8;border:1px solid rgba(28,27,25,.1);border-radius:6px;padding:20px">
+            <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:14px">Keep a record</div>
+            <button onClick="{{ onSave }}" style="width:100%;text-align:left;padding:12px 14px;border-radius:4px;background:#1c1b19;color:#fbfaf8;border:1px solid #1c1b19;cursor:pointer;font-size:13.5px;font-weight:500;margin-bottom:8px" style-hover="background:#332f2a">{{ saveLabel }}</button>
+            <button onClick="{{ onCopy }}" style="width:100%;text-align:left;padding:12px 14px;border-radius:4px;background:none;color:#2a2825;border:1px solid rgba(28,27,25,.2);cursor:pointer;font-size:13.5px;margin-bottom:8px" style-hover="border-color:rgba(28,27,25,.4)">{{ copyLabel }}</button>
+            <button onClick="{{ onPrint }}" style="width:100%;text-align:left;padding:12px 14px;border-radius:4px;background:none;color:#2a2825;border:1px solid rgba(28,27,25,.2);cursor:pointer;font-size:13.5px" style-hover="border-color:rgba(28,27,25,.4)">Print / save as PDF</button>
+          </div>
+          <div style="background:#fbfaf8;border:1px solid rgba(28,27,25,.1);border-radius:6px;padding:20px">
+            <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:13px">What Litmus checked</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <sc-for list="{{ inputSummary }}" as="s" hint-placeholder-count="6">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:11px;color:#a3a09a;letter-spacing:.02em">{{ s.label }}</span>
+                  <span style="font-size:12.5px;color:#2a2825;font-weight:450;line-height:1.4">{{ s.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <button data-noprint="1" onClick="{{ onBack }}" style="margin-top:16px;background:none;border:none;padding:0;font-size:12.5px;color:#6f6c66;cursor:pointer;border-bottom:1px solid rgba(28,27,25,.2)" style-hover="color:#1c1b19">Edit these values</button>
+          </div>
+          <div data-noprint="1" style="font-size:11.5px;line-height:1.5;color:#a3a09a;padding:0 4px">Rule values shown are as published for 2026–27 and pending OIS verification.</div>
+        </aside>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSignin }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:78px 0 64px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:72px;align-items:start;animation:lit-in .3s ease both">
+        <div style="min-width:0;max-width:52ch">
+          <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:14px">Optional, and only for this</div>
+          <h1 style="font-family:Newsreader,serif;font-size:38px;line-height:1.15;font-weight:400;letter-spacing:-0.02em;margin:0 0 16px">Keep a record of what you've checked.</h1>
+          <p style="font-size:15.5px;line-height:1.6;color:#5f5c56;margin:0 0 28px;text-wrap:pretty">An account does one thing: it saves your checks so you can see, at a glance, which of your twelve applications are worth your time. Litmus still won't decide your eligibility, and it still isn't your school.</p>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ signinPoints }}" as="p" hint-placeholder-count="3">
+              <div style="display:grid;grid-template-columns:16px minmax(0,1fr);gap:12px;align-items:baseline">
+                <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:11px;color:{{ p.color }}">{{ p.mark }}</span>
+                <span style="font-size:13.5px;line-height:1.55;color:#4a4640;text-wrap:pretty">{{ p.text }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:#fbfaf8;border:1px solid rgba(28,27,25,.12);border-radius:6px;padding:26px">
+          <div style="font-family:Newsreader,serif;font-size:21px;font-weight:500;letter-spacing:-0.01em;margin-bottom:18px">Sign in to save this check</div>
+          <label for="email" style="display:block;font-size:12px;font-weight:500;color:#3d3b37;margin-bottom:7px">School email</label>
+          <input id="email" value="{{ email }}" onChange="{{ onEmail }}" placeholder="you@usc.edu" style="width:100%;padding:11px 13px;font-size:13.5px;color:#1c1b19;background:#fdfdfc;border:1px solid rgba(28,27,25,.16);border-radius:4px;outline:none;margin-bottom:8px" style-focus="border-color:oklch(0.48 0.075 250 / 0.55);box-shadow:0 0 0 3px oklch(0.48 0.075 250 / 0.09)">
+          <div style="font-size:11.5px;line-height:1.45;color:#8d8a84;margin-bottom:18px">We use the domain to set your school's rules. No transcript, no I-20, no SEVIS number.</div>
+          <button onClick="{{ onSignin }}" style="width:100%;padding:13px;font-size:14px;font-weight:500;border-radius:4px;cursor:pointer;background:#1c1b19;color:#fbfaf8;border:1px solid #1c1b19" style-hover="background:#332f2a">Email me a sign-in link</button>
+          <div style="display:flex;align-items:center;gap:12px;margin:18px 0">
+            <span style="height:1px;background:rgba(28,27,25,.12);flex:1"></span>
+            <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#a3a09a">or</span>
+            <span style="height:1px;background:rgba(28,27,25,.12);flex:1"></span>
+          </div>
+          <button onClick="{{ onSignin }}" style="width:100%;padding:13px;font-size:13.5px;border-radius:4px;cursor:pointer;background:none;color:#2a2825;border:1px solid rgba(28,27,25,.2)" style-hover="border-color:rgba(28,27,25,.4)">Continue with your university SSO</button>
+          <button onClick="{{ onRestart }}" style="width:100%;margin-top:16px;background:none;border:none;padding:0;font-size:12.5px;color:#6f6c66;cursor:pointer" style-hover="color:#1c1b19">Keep checking without an account</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTracker }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:44px 0 56px;animation:lit-in .3s ease both">
+        <div style="display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-bottom:26px">
+          <div style="min-width:0">
+            <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:12px">Your checks</div>
+            <h1 style="font-family:Newsreader,serif;font-size:34px;line-height:1.15;font-weight:400;letter-spacing:-0.02em;margin:0 0 8px">{{ trackerTitle }}</h1>
+            <p style="font-size:14px;line-height:1.55;color:#5f5c56;margin:0;max-width:64ch;text-wrap:pretty">{{ trackerSub }}</p>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px">
+            <sc-for list="{{ boardTabs }}" as="t" hint-placeholder-count="2">
+              <button onClick="{{ t.onPick }}" style="padding:9px 15px;font-size:13px;border-radius:4px;cursor:pointer;background:{{ t.bg }};border:1px solid {{ t.border }};color:{{ t.color }};font-weight:{{ t.weight }};white-space:nowrap">{{ t.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start">
+          <sc-for list="{{ trackerColumns }}" as="col" hint-placeholder-count="3">
+            <div style="min-width:0;background:{{ col.colBg }};border:1px solid {{ col.colBorder }};border-radius:6px;padding:16px 16px 18px">
+              <div style="display:flex;align-items:baseline;gap:9px;padding:0 2px 14px;border-bottom:1px solid rgba(28,27,25,.08);margin-bottom:14px">
+                <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:{{ col.titleColor }}">{{ col.title }}</span>
+                <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;color:#a3a09a;margin-left:auto">{{ col.count }}</span>
+              </div>
+              <div style="font-size:12px;line-height:1.5;color:#6f6c66;padding:0 2px 14px;text-wrap:pretty">{{ col.blurb }}</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ col.cards }}" as="c" hint-placeholder-count="2">
+                  <div onClick="{{ c.onOpen }}" style="background:#fdfdfc;border:1px solid rgba(28,27,25,.12);border-radius:5px;padding:14px 15px;cursor:pointer;box-shadow:0 1px 2px rgba(28,27,25,.04)" style-hover="border-color:rgba(28,27,25,.28);box-shadow:0 3px 10px rgba(28,27,25,.07)">
+                    <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:5px">
+                      <span style="width:6px;height:6px;border-radius:50%;flex:none;background:{{ c.dot }}"></span>
+                      <span style="font-size:13.5px;font-weight:500;color:#1c1b19;line-height:1.35">{{ c.role }}</span>
+                    </div>
+                    <div style="font-size:12.5px;color:#5f5c56;margin-bottom:9px">{{ c.employer }}</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">
+                      <sc-for list="{{ c.meta }}" as="m" hint-placeholder-count="3">
+                        <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.03em;color:#6f6c66;border:1px solid rgba(28,27,25,.12);border-radius:3px;padding:3px 6px;white-space:nowrap">{{ m.text }}</span>
+                      </sc-for>
+                    </div>
+                    <div style="font-size:12px;line-height:1.5;color:{{ c.reasonColor }};margin-bottom:10px;text-wrap:pretty">{{ c.reason }}</div>
+                    <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:#a3a09a">
+                      <span>{{ c.checked }}</span>
+                      <span style="margin-left:auto;color:oklch(0.48 0.075 250)">{{ c.cta }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+                <div style="border:1px dashed rgba(28,27,25,.18);border-radius:5px;padding:18px 14px;font-size:12.5px;line-height:1.5;color:#a3a09a;text-align:center;display:{{ col.emptyDisplay }}">{{ col.emptyCopy }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:18px;margin-top:26px;flex-wrap:wrap">
+          <button onClick="{{ onRestart }}" style="padding:12px 20px;font-size:13.5px;font-weight:500;border-radius:4px;cursor:pointer;background:#1c1b19;color:#fbfaf8;border:1px solid #1c1b19" style-hover="background:#332f2a">Check another offer</button>
+          <span style="font-size:12.5px;line-height:1.5;color:#8d8a84;max-width:70ch;text-wrap:pretty">Cards move columns on their own when you re-check them, so an amended letter or a confirmed hours number lands where it belongs. Nothing here is an eligibility decision, and none of it is shared with your school.</span>
+        </div>
+      </div>
+    </sc-if>
+
+  </main>
+
+  <footer style="border-top:1px solid rgba(28,27,25,.09);background:#fbfaf8;margin-top:auto">
+    <div style="max-width:1280px;margin:0 auto;padding:18px 56px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <span style="font-size:12.5px;line-height:1.5;color:#5f5c56;max-width:80ch">This checks your offer against your school's published CPT rules. It is not an eligibility decision, confirm with OIS before acting.</span>
+      <span data-noprint="1" style="margin-left:auto;font-family:var(--mono);font-weight:var(--monoW);font-size:10px;color:#a3a09a">Litmus v1 · mockup</span>
+    </div>
+  </footer>
+
+  <sc-if value="{{ emailOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-noprint="1" style="position:fixed;inset:0;z-index:40;background:rgba(28,27,25,.42);display:flex;align-items:center;justify-content:center;padding:40px">
+      <div onClick="{{ onCloseEmail }}" style="position:absolute;inset:0"></div>
+      <div style="position:relative;width:100%;max-width:760px;max-height:86vh;overflow:auto;background:#fdfdfc;border:1px solid rgba(28,27,25,.16);border-radius:8px;box-shadow:0 24px 60px rgba(28,27,25,.28);animation:lit-pop .22s ease both">
+        <div style="display:flex;align-items:flex-start;gap:20px;padding:22px 24px 16px;border-bottom:1px solid rgba(28,27,25,.09)">
+          <div style="min-width:0">
+            <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:8px">Draft: nothing is sent for you</div>
+            <div style="font-family:Newsreader,serif;font-size:24px;font-weight:500;letter-spacing:-0.015em">{{ draftTitle }}</div>
+          </div>
+          <button onClick="{{ onCloseEmail }}" style="margin-left:auto;flex:none;background:none;border:1px solid rgba(28,27,25,.16);border-radius:4px;width:30px;height:30px;font-size:14px;color:#5f5c56;cursor:pointer" style-hover="border-color:rgba(28,27,25,.4);color:#1c1b19">✕</button>
+        </div>
+        <div style="display:flex;gap:6px;padding:14px 24px 0;flex-wrap:wrap">
+          <sc-for list="{{ draftTabs }}" as="t" hint-placeholder-count="2">
+            <button onClick="{{ t.onPick }}" style="padding:7px 13px;font-size:12.5px;border-radius:4px;cursor:pointer;background:{{ t.bg }};border:1px solid {{ t.border }};color:{{ t.color }};font-weight:{{ t.weight }}">{{ t.label }}</button>
+          </sc-for>
+        </div>
+        <div style="padding:16px 24px 4px">
+          <div style="display:flex;flex-direction:column;gap:1px;border:1px solid rgba(28,27,25,.12);border-radius:5px;overflow:hidden;background:rgba(28,27,25,.06)">
+            <div style="display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;padding:11px 14px;background:#fbfaf8;font-size:13px">
+              <span style="color:#a3a09a">To</span><span style="color:#2a2825">{{ draftTo }}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;padding:11px 14px;background:#fbfaf8;font-size:13px">
+              <span style="color:#a3a09a">Subject</span><span style="color:#2a2825;font-weight:500">{{ draftSubject }}</span>
+            </div>
+            <div style="padding:18px 16px;background:#fdfdfc;font-size:13.5px;line-height:1.65;color:#2a2825;white-space:pre-wrap">{{ draftBody }}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 24px 22px;flex-wrap:wrap">
+          <button onClick="{{ onCopyDraft }}" style="padding:11px 18px;font-size:13.5px;font-weight:500;border-radius:4px;cursor:pointer;background:#1c1b19;color:#fbfaf8;border:1px solid #1c1b19" style-hover="background:#332f2a">{{ draftCopyLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div data-noprint="1" style="position:fixed;left:50%;transform:translateX(-50%);bottom:22px;z-index:30;display:flex;align-items:center;gap:5px;background:rgba(28,27,25,.93);border-radius:999px;padding:6px 8px 6px 14px;box-shadow:0 6px 24px rgba(28,27,25,.22)">
+    <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,250,248,.5);margin-right:5px;white-space:nowrap">States</span>
+    <sc-for list="{{ stateSwitcher }}" as="s" hint-placeholder-count="5">
+      <button onClick="{{ s.onPick }}" style="padding:6px 12px;border-radius:999px;border:none;cursor:pointer;font-size:11.5px;font-weight:450;white-space:nowrap;background:{{ s.bg }};color:{{ s.color }}">{{ s.label }}</button>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;labelFace&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;No mono (sans)&quot;,&quot;No mono (serif)&quot;,&quot;Geist Mono&quot;,&quot;DM Mono&quot;,&quot;Spline Sans Mono&quot;,&quot;Red Hat Mono&quot;,&quot;Sometype Mono&quot;,&quot;Chivo Mono&quot;,&quot;Azeret Mono&quot;,&quot;Reddit Mono&quot;,&quot;Fragment Mono&quot;,&quot;Inconsolata&quot;,&quot;Source Code Pro&quot;,&quot;JetBrains Mono&quot;,&quot;Victor Mono&quot;,&quot;Kode Mono&quot;,&quot;Martian Mono&quot;,&quot;Noto Sans Mono&quot;,&quot;IBM Plex Mono&quot;],&quot;default&quot;:&quot;No mono (sans)&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Type&quot;},&quot;blockerEmphasis&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;quiet&quot;,&quot;medium&quot;,&quot;loud&quot;],&quot;default&quot;:&quot;medium&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Results&quot;},&quot;schoolCycle&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Screen 1&quot;}}">
+const CAL = {
+  fall: { name: "Fall 2026", start: "Aug 24, 2026", end: "Dec 11, 2026", deadline: "Jul 1, 2026", cap: "20 hrs/wk max" },
+  summer: { name: "Summer 2026", start: "May 18, 2026", end: "Aug 14, 2026", deadline: "Apr 15, 2026", cap: "Full-time allowed" }
+};
+
+const SRC = {
+  term: { name: "CPT term dates", quote: "CPT authorization is granted per academic term and may not begin before the first day of that term or extend past its last day.", cite: "OIS · Employment › CPT › Authorization periods" },
+  gap: { name: "Authorization start", quote: "You may not begin working until the start date printed on your CPT I-20. Work performed before that date is unauthorized employment.", cite: "OIS · Employment › CPT › Before you start" },
+  deadline: { name: "Application deadlines", quote: "CPT requests must be submitted at least 10 business days before the term begins. Requests received after the posted deadline are processed for the following term.", cite: "OIS · Employment › CPT › Deadlines" },
+  hours: { name: "Hours limits", quote: "During fall and spring, CPT is limited to 20 hours per week. Full-time CPT is permitted during summer, and during a student's final semester when coursework is complete.", cite: "OIS · Employment › CPT › Part-time vs full-time" },
+  location: { name: "Approved commute zone", quote: "The employment site must be within a reasonable commuting distance of the University Park or Health Sciences campus, generally Los Angeles, Orange and Ventura counties.", cite: "OIS · Employment › CPT › Work location" }
+};
+
+const TRACK = {
+  jd: [
+    { col: "no", role: "IT Innovation Intern", employer: "Hollywood Park (SoFi Stadium)", meta: ["Aug 5 – Dec 12", "25–30 hrs/wk", "Inglewood, CA"], reason: "3 hard conflicts: start date, hours, and the fall window closed Jul 1.", checked: "Checked Jul 29", sample: "A" },
+    { col: "no", role: "AI Program Manager Intern", employer: "Mercedes-Benz R&D North America", meta: ["Jul 20 – Dec 18", "40 hrs/wk", "San Jose, CA"], reason: "Outside the approved commute zone, and 40 hrs/wk after Aug 24.", checked: "Checked Jul 28", sample: "B" },
+    { col: "no", role: "Data Operations Intern", employer: "Vantage Sports Group", meta: ["Aug 10 – Dec 5", "30 hrs/wk", "Culver City, CA"], reason: "Starts 14 days before fall CPT can begin, and hours are over the cap.", checked: "Checked Jul 24" },
+    { col: "maybe", role: "Product Analyst Intern", employer: "Kite & Rail", meta: ["Sep 1 – Dec 12", "Hours not stated", "Pasadena, CA"], reason: "Everything checks out except hours, which the posting never states.", checked: "Checked Jul 27" },
+    { col: "maybe", role: "UX Intern", employer: "Fielding Health", meta: ["Aug 31 – Dec 11", "Hours not stated", "Long Beach, CA"], reason: "Dates and location pass. Ask the recruiter for a number in writing.", checked: "Checked Jul 22" },
+    { col: "clear", role: "Motion Design Intern", employer: "Northline Media", meta: ["Sep 8 – Dec 11", "18 hrs/wk", "Los Angeles, CA"], reason: "No conflicts found. Confirm with OIS before you accept.", checked: "Checked Jul 26" }
+  ],
+  offer: [
+    { col: "no", role: "Systems Intern", employer: "Halcyon Robotics", meta: ["Aug 17 – Dec 19", "40 hrs/wk", "Fremont, CA"], reason: "Signed offer, but Fremont is outside the zone. Needs an amended letter or a different site.", checked: "Checked Jul 25" },
+    { col: "maybe", role: "Policy Intern", employer: "Cadence Civic", meta: ["Sep 2 – Dec 12", "20 hrs/wk", "Los Angeles, CA"], reason: "Rules all pass, but the letter is missing letterhead and a signature.", checked: "Checked Jul 21" },
+    { col: "clear", role: "Summer UX Research Intern", employer: "Praxis Studio", meta: ["Jun 2 – Aug 15", "40 hrs/wk", "Santa Monica, CA"], reason: "No conflicts, and all six required letter elements are present.", checked: "Checked Jul 20", sample: "C" }
+  ]
+};
+
+const COLS = [
+  { key: "no", title: "Hard no", blurb: "Something only the employer could change, or the window has closed.", hue: 25 },
+  { key: "maybe", title: "Maybe", blurb: "Nothing collides yet, but a value is missing or unconfirmed.", hue: 85 },
+  { key: "clear", title: "All clear", blurb: "Every rule Litmus can check lines up. OIS still has the final word.", hue: 155 }
+];
+
+const MONO = {
+  "DM Mono": "'DM Mono', ui-monospace, monospace",
+  "Geist Mono": "'Geist Mono', ui-monospace, monospace",
+  "IBM Plex Mono": "'IBM Plex Mono', ui-monospace, monospace",
+  "JetBrains Mono": "'JetBrains Mono', ui-monospace, monospace",
+  "Azeret Mono": "'Azeret Mono', ui-monospace, monospace",
+  "Spline Sans Mono": "'Spline Sans Mono', ui-monospace, monospace",
+  "Red Hat Mono": "'Red Hat Mono', ui-monospace, monospace",
+  "Sometype Mono": "'Sometype Mono', ui-monospace, monospace",
+  "Martian Mono": "'Martian Mono', ui-monospace, monospace",
+  "Chivo Mono": "'Chivo Mono', ui-monospace, monospace",
+  "Kode Mono": "'Kode Mono', ui-monospace, monospace",
+  "Reddit Mono": "'Reddit Mono', ui-monospace, monospace",
+  "Inconsolata": "'Inconsolata', ui-monospace, monospace",
+  "Source Code Pro": "'Source Code Pro', ui-monospace, monospace",
+  "Victor Mono": "'Victor Mono', ui-monospace, monospace",
+  "Noto Sans Mono": "'Noto Sans Mono', ui-monospace, monospace",
+  "Fragment Mono": "'Fragment Mono', ui-monospace, monospace",
+  "No mono (sans)": "'IBM Plex Sans', system-ui, sans-serif",
+  "No mono (serif)": "Newsreader, Georgia, serif"
+};
+
+const SCHOOLS = ["your school's", "USC's", "UCLA's", "Northwestern's", "NYU's", "Purdue's"];
+
+const SAMPLES = {
+  A: {
+    label: "Sample A", docType: "jd",
+    raw: "IT Innovation Intern, Hollywood Park / SoFi Stadium\nInglewood, CA (on-site)\n\nHollywood Park is seeking an IT Innovation Intern to support venue technology operations across SoFi Stadium and the YouTube Theater. Start date: August 5, 2026, through the end of the fall season (December 12, 2026). Expected commitment 25–30 hours per week, with occasional event-day evenings and weekends.\n\nResponsibilities include supporting network and AV infrastructure, documenting venue systems, and assisting the innovation team with pilot deployments. Apply online with a resume; the recruiting team will follow up to schedule a screen.",
+    employerShort: "Hollywood Park",
+    fields: { employer: "Hollywood Park (SoFi Stadium)", start: "Aug 5, 2026", end: "Dec 12, 2026", hours: "25–30 hrs/wk", location: "Inglewood, CA" },
+    lead: "This listing collides with the fall term's start date, its hours cap, and its application deadline. The work location is fine.",
+    checks: [
+      { key: "term", status: "pass", title: "CPT term", offer: "Aug 5 – Dec 12, 2026", rule: CAL.fall.name + " · " + CAL.fall.start + " – " + CAL.fall.end, next: "The bulk of this role sits inside the fall term, so every rule below is the fall rule.", src: SRC.term },
+      { key: "gap", status: "blocker", title: "Start-date gap", offer: "Starts Aug 5, 2026", rule: "Not before " + CAL.fall.start, next: "Nineteen days of this role fall before fall CPT can start. Ask the recruiter whether the first day can move to Aug 24, frame it as a compliance date, not a preference.", src: SRC.gap },
+      { key: "deadline", status: "blocker", title: "Application deadline", offer: "Applying Jul 29, 2026", rule: "Fall window closed " + CAL.fall.deadline, next: "The fall window has closed, so this role as posted can't be authorized in time. Ask whether it can shift to spring, and get on OIS's calendar this week to confirm.", src: SRC.deadline },
+      { key: "hours", status: "blocker", title: "Weekly hours", offer: "25–30 hrs/wk", rule: CAL.fall.cap + " (fall)", next: "You'd need the role rewritten to 20 hours or fewer during the term. Ask whether the extra hours can move to the summer or winter break instead.", src: SRC.hours },
+      { key: "location", status: "pass", title: "Work location", offer: "Inglewood, CA · 8 mi", rule: "LA / Orange / Ventura counties", next: "Inside the approved commute zone, no action needed.", src: SRC.location }
+    ],
+    completeness: [
+      { label: "Employer legal name", ok: true },
+      { label: "Physical work address", ok: true },
+      { label: "Job description aligned to your major", ok: false, note: "Duties are listed, but nothing ties them to your program." },
+      { label: "Exact weekly hours", ok: false, note: "\u201c25–30\u201d is a range; OIS needs a single number." },
+      { label: "Start and end dates", ok: true },
+      { label: "Official letterhead + signature", ok: false, note: "This is a posting, not a letter. You'll need one if you're offered the role." }
+    ]
+  },
+  B: {
+    label: "Sample B", docType: "jd",
+    raw: "AI Program Manager Intern, Mercedes-Benz Research & Development North America (MBRDNA)\nSan Jose, CA\n\nMBRDNA is hiring an AI Program Manager Intern to coordinate delivery across our automated driving and machine learning teams. Full-time, 40 hours per week, on-site in San Jose. Duration: July 20, 2026 – December 18, 2026.\n\nYou will run sprint rituals for two ML pods, maintain the program roadmap, and prepare executive readouts. Apply through our careers site.",
+    employerShort: "MBRDNA",
+    fields: { employer: "Mercedes-Benz R&D North America", start: "Jul 20, 2026", end: "Dec 18, 2026", hours: "40 hrs/wk", location: "San Jose, CA" },
+    lead: "The location conflict is the decisive one: San Jose sits outside the counties your school treats as a reasonable commute.",
+    checks: [
+      { key: "location", status: "blocker", title: "Work location", offer: "San Jose, CA · 340 mi", rule: "LA / Orange / Ventura counties", next: "This is the conflict that ends the role as posted. Ask whether it can be based at an LA-area site, or whether a remote arrangement reporting to an LA office is possible, then take that answer to OIS.", src: SRC.location },
+      { key: "hours", status: "blocker", title: "Weekly hours", offer: "40 hrs/wk through Dec 18", rule: "20 hrs/wk max after " + CAL.fall.start, next: "Forty hours works until the fall term begins, then it doesn't. If the location is resolved, ask for a written step-down to 20 hrs/wk from Aug 24.", src: SRC.hours },
+      { key: "term", status: "warning", title: "CPT term", offer: "Jul 20 – Dec 18, 2026", rule: "Spans " + CAL.summer.name + " and " + CAL.fall.name, next: "This role crosses two terms, so it needs two authorizations with two different hours caps. Flag the split to OIS up front.", src: SRC.term },
+      { key: "gap", status: "pass", title: "Start-date gap", offer: "Starts Jul 20, 2026", rule: "Summer CPT open from " + CAL.summer.start, next: "The start date sits inside the summer authorization window, no gap.", src: SRC.gap },
+      { key: "deadline", status: "pass", title: "Application deadline", offer: "Applying Jul 29, 2026", rule: "Fall window closed " + CAL.fall.deadline, next: "The summer portion is inside its window. The fall continuation needs its own request, raise it with OIS now.", src: SRC.deadline }
+    ],
+    completeness: [
+      { label: "Employer legal name", ok: true },
+      { label: "Physical work address", ok: true },
+      { label: "Job description aligned to your major", ok: true },
+      { label: "Exact weekly hours", ok: true },
+      { label: "Start and end dates", ok: true },
+      { label: "Official letterhead + signature", ok: false, note: "Posting text only, you'd need the signed letter to submit." }
+    ]
+  },
+  C: {
+    label: "Sample C", docType: "letter",
+    raw: "PRAXIS STUDIO\n1420 5th Street, Santa Monica, CA 90401\n\nJune 2, 2026\n\nDear Amara,\n\nWe are pleased to offer you the position of Summer UX Research Intern at Praxis Studio. This is a paid, full-time internship of 40 hours per week, beginning June 2, 2026 and ending August 15, 2026, based at our Santa Monica office.\n\nIn this role you will run moderated usability sessions, synthesize findings, and present to client teams alongside a senior researcher. The work is directly aligned with your graduate coursework in human-computer interaction.\n\nPlease sign and return a copy of this letter to confirm your acceptance.\n\nSincerely,\nDana Whitfield\nDirector of Research, Praxis Studio",
+    employerShort: "Praxis Studio",
+    fields: { employer: "Praxis Studio", start: "Jun 2, 2026", end: "Aug 15, 2026", hours: "40 hrs/wk", location: "Santa Monica, CA" },
+    lead: "Every rule Litmus can check lines up: summer dates, full-time hours, in-zone location, and the deadline was met.",
+    checks: [
+      { key: "term", status: "pass", title: "CPT term", offer: "Jun 2 – Aug 15, 2026", rule: CAL.summer.name + " · " + CAL.summer.start + " – " + CAL.summer.end, next: "Sits entirely inside one term, so one authorization covers it.", src: SRC.term },
+      { key: "gap", status: "pass", title: "Start-date gap", offer: "Starts Jun 2, 2026", rule: "Summer CPT open from " + CAL.summer.start, next: "Two weeks of margin before your first day. Nothing to change.", src: SRC.gap },
+      { key: "deadline", status: "pass", title: "Application deadline", offer: "Applied Apr 2, 2026", rule: "Summer window closed " + CAL.summer.deadline, next: "Submitted inside the window. Keep the confirmation email for your records.", src: SRC.deadline },
+      { key: "hours", status: "pass", title: "Weekly hours", offer: "40 hrs/wk", rule: CAL.summer.cap + " (summer)", next: "Full-time is permitted over the summer term. If any part of the role slips past Aug 24, the 20-hour cap starts applying.", src: SRC.hours },
+      { key: "location", status: "pass", title: "Work location", offer: "Santa Monica, CA · 14 mi", rule: "LA / Orange / Ventura counties", next: "Inside the approved commute zone, no action needed.", src: SRC.location }
+    ],
+    completeness: [
+      { label: "Employer legal name", ok: true },
+      { label: "Physical work address", ok: true },
+      { label: "Job description aligned to your major", ok: true },
+      { label: "Exact weekly hours", ok: true },
+      { label: "Start and end dates", ok: true },
+      { label: "Official letterhead + signature", ok: true }
+    ]
+  }
+};
+
+const YEARS = {
+  undergrad: ["Freshman", "Sophomore", "Junior", "Senior"],
+  grad: ["Master's · year 1", "Master's · year 2", "Master's · year 3+"],
+  phd: ["PhD · year 1–2", "PhD · year 3–4", "PhD · year 5+"]
+};
+const LEVELS = [["undergrad", "Undergraduate"], ["grad", "Master's"], ["phd", "PhD"]];
+
+const STATUS = {
+  pass: { chipBg: "oklch(0.955 0.035 155)", chipColor: "oklch(0.42 0.09 155)", chipBorder: "oklch(0.88 0.055 155)", tint: "transparent" },
+  warning: { chipBg: "oklch(0.96 0.045 85)", chipColor: "oklch(0.47 0.1 70)", chipBorder: "oklch(0.88 0.06 85)", tint: "oklch(0.988 0.014 85)" },
+  blocker: { chipBg: "oklch(0.955 0.04 25)", chipColor: "oklch(0.48 0.14 25)", chipBorder: "oklch(0.88 0.06 25)", tint: "oklch(0.988 0.012 25)" }
+};
+const ORDER = { blocker: 0, warning: 1, pass: 2 };
+
+const LETTER_HINTS = ["dear ", "pleased to offer", "offer letter", "we are excited to offer", "sign and return", "your acceptance", "sincerely,", "this letter"];
+const JD_HINTS = ["is seeking", "is hiring", "responsibilities include", "apply online", "careers site", "we are looking for", "job description", "qualifications"];
+
+function detect(raw) {
+  const t = (raw || "").toLowerCase();
+  if (t.trim().length < 40) return "";
+  let l = 0, j = 0;
+  LETTER_HINTS.forEach(h => { if (t.indexOf(h) > -1) l++; });
+  JD_HINTS.forEach(h => { if (t.indexOf(h) > -1) j++; });
+  if (l === 0 && j === 0) return "jd";
+  return l > j ? "letter" : "jd";
+}
+
+class Component extends DCLogic {
+  state = {
+    step: "input", sample: "A", raw: "", level: "", year: "", finalSem: "",
+    fields: null, docType: "", missing: {}, open: {}, copied: false, loadIdx: 0, lastSig: "",
+    schoolIdx: 0, emailOpen: false, draftIdx: 0, draftCopied: false,
+    signedIn: false, email: "", board: "jd", saved: false, wordOn: true
+  };
+
+  componentDidMount() {
+    this.school = setInterval(() => {
+      this.setState({ wordOn: false });
+      setTimeout(() => this.setState(p => ({ schoolIdx: (p.schoolIdx + 1) % SCHOOLS.length, wordOn: true })), 260);
+    }, 2600);
+  }
+  componentWillUnmount() { clearInterval(this.timer); clearInterval(this.school); }
+
+  prefill(k) {
+    this.setState({
+      sample: k, raw: SAMPLES[k].raw, missing: {}, docType: "",
+      level: this.state.level || "grad",
+      year: this.state.year || "Master's · year 2",
+      finalSem: this.state.finalSem || "no"
+    });
+  }
+
+  jump(k, miss) {
+    const f = Object.assign({}, SAMPLES[k].fields);
+    if (miss) f.hours = "";
+    clearInterval(this.timer);
+    this.setState({
+      sample: k, raw: SAMPLES[k].raw, fields: f, docType: SAMPLES[k].docType,
+      missing: miss ? { hours: true } : {}, open: {}, copied: false, emailOpen: false, draftIdx: 0, lastSig: "",
+      level: "grad", year: "Master's · year 2", finalSem: "no",
+      step: miss ? "confirm" : "results"
+    });
+  }
+
+  runLoading(next) {
+    clearInterval(this.timer);
+    this.setState({ step: "loading", loadIdx: 0 });
+    let i = 0;
+    this.timer = setInterval(() => {
+      i++;
+      if (i > 5) { clearInterval(this.timer); this.setState({ step: next }); }
+      else this.setState({ loadIdx: i });
+    }, 260);
+  }
+
+  buildChecks(s, fields, isLetter) {
+    const hoursBlank = !String(fields.hours || "").trim();
+    return s.checks.map(c => {
+      if (c.key !== "hours" || !hoursBlank) return c;
+      return {
+        key: "hours", status: "warning", title: "Weekly hours: can't be checked",
+        offer: "Not stated", rule: CAL.fall.cap + " (fall)",
+        next: isLetter
+          ? "An offer letter has to state exact weekly hours before OIS will accept it. Ask for a letter that names a single number."
+          : "Most public listings leave hours out, and Litmus won't guess. Ask the recruiter for a number in writing, if it lands above 20/wk during the term, this becomes a hard conflict.",
+        src: SRC.hours
+      };
+    });
+  }
+
+  drafts(s, fields, checks, isLetter) {
+    const blockers = checks.filter(c => c.status === "blocker");
+    const warnings = checks.filter(c => c.status === "warning");
+    const list = (arr) => arr.map(c => "• " + c.title + ": " + (isLetter ? "my letter" : "the listing") + " says " + c.offer + "; the published rule is " + c.rule + ".").join("\n");
+    const out = [];
+
+    const oisBody = blockers.length
+      ? "Hello,\n\nI'm an F-1 student (" + (this.state.year || "graduate student") + ") and I'm looking at a" + (isLetter ? "n offer from " : " posting from ") + fields.employer + " in " + fields.location + ", " + fields.start + " to " + fields.end + " at " + (fields.hours || "hours not yet stated") + ".\n\nBefore I go further I compared it against the published CPT rules and found conflicts I can't resolve on my own:\n\n" + list(blockers.concat(warnings)) + "\n\nCould you confirm whether any of these can be worked around, and what my options are for this term? I'd rather adjust the " + (isLetter ? "letter" : "role") + " now than submit something that can't be authorized.\n\nThank you,\n[Your name] · [School ID]"
+      : "Hello,\n\nI'm an F-1 student (" + (this.state.year || "graduate student") + ") with " + (isLetter ? "a signed offer" : "an opportunity") + " from " + fields.employer + " in " + fields.location + ", " + fields.start + " to " + fields.end + ", " + (fields.hours || "hours TBD") + ".\n\nI compared it against the published CPT rules and found no conflicts in the dates, hours, or work location. I'd like to start the CPT request and confirm nothing is missing from my side, the letter is on company letterhead and states the address, dates, hours, and duties.\n\nWhat's the earliest appointment or submission slot available? I understand processing takes about 10 business days.\n\nThank you,\n[Your name] · [School ID]";
+    out.push({ label: "To OIS", to: "ois@yourschool.edu", subject: (blockers.length ? "CPT question: conflicts on a " + (isLetter ? "signed offer" : "posting") + " (" + fields.employer + ")" : "CPT request, " + fields.employer + ", " + fields.start), body: oisBody });
+
+    if (blockers.length) {
+      const asks = blockers.map(c => {
+        if (c.key === "hours") return "• Weekly hours capped at 20 during the fall term (currently " + c.offer + ").";
+        if (c.key === "gap") return "• A start date of " + CAL.fall.start + " or later (currently " + c.offer.replace("Starts ", "") + ").";
+        if (c.key === "location") return "• A work site inside Los Angeles, Orange, or Ventura county (currently " + fields.location + ").";
+        if (c.key === "deadline") return "• A later term start, since the authorization window for this term has closed.";
+        return "• " + c.title + ".";
+      }).join("\n");
+      out.push({
+        label: isLetter ? "To the employer" : "To the recruiter",
+        to: "recruiting@" + (fields.employer.split(" ")[0].toLowerCase().replace(/[^a-z]/g, "")) + ".com",
+        subject: isLetter ? "Question on the offer letter: work authorization details" : "Question before I apply: " + fields.employer + " internship",
+        body: "Hi,\n\nThank you for " + (isLetter ? "the offer" : "posting this role") + ", I'm genuinely interested.\n\nAs an international student on an F-1 visa, my work authorization has a few fixed requirements, and I want to raise them early rather than after " + (isLetter ? "I sign" : "an interview process") + ":\n\n" + asks + "\n\nAre any of these adjustable? If so I'd move ahead right away" + (isLetter ? " and get the amended letter to my university's international office." : ".") + "\n\nBest,\n[Your name]"
+      });
+    }
+    return out;
+  }
+
+  whatNow(s, checks, isLetter, fields) {
+    const blockers = checks.filter(c => c.status === "blocker");
+    const warnings = checks.filter(c => c.status === "warning");
+    const openEmail = (i) => () => this.setState({ emailOpen: true, draftIdx: i, draftCopied: false });
+
+    if (isLetter && !blockers.length) {
+      return {
+        headline: "Start the authorization today, not next week.",
+        body: "Nothing in this letter collides with the published rules, and it has everything OIS needs. Processing takes about 10 business days, and you can't work a single day before the date printed on your CPT I-20.",
+        foot: "Litmus can't authorize anything. OIS issues the I-20, this is the shortest path to asking them.",
+        steps: [
+          { title: "Email OIS to open the CPT request", detail: "Draft is written and cites the checks that passed.", action: "Open the draft", onAct: openEmail(0), primary: true },
+          { title: "Keep the signed letter on letterhead", detail: "Attach the PDF, all six required elements are present.", action: "Print the summary", onAct: () => window.print() },
+          { title: "Don't start before your I-20 date", detail: "Even one day early counts as unauthorized employment.", action: "" }
+        ]
+      };
+    }
+    if (isLetter && blockers.length) {
+      return {
+        headline: "Don't sign it yet: get the letter amended first.",
+        body: "The offer is real; the letter as written can't be authorized. Amended letters are routine for employers who've hired international students before, and asking now is far cheaper than withdrawing later.",
+        foot: "Ask the employer first, OIS second, OIS will want to see the amended letter anyway.",
+        steps: [
+          { title: "Ask the employer for an amended letter", detail: "The draft names exactly which values need to change.", action: "Open the draft", onAct: openEmail(1), primary: true },
+          { title: "Flag the conflict to OIS in parallel", detail: "So you're not waiting on two queues in sequence.", action: "Open the draft", onAct: openEmail(0) },
+          { title: "Hold off on signing", detail: "A signed letter is harder to renegotiate than an unsigned one.", action: "" }
+        ]
+      };
+    }
+    if (!blockers.length) {
+      return {
+        headline: warnings.length ? "Worth applying, with one thing to nail down." : "Nothing here collides. Apply.",
+        body: warnings.length
+          ? "No hard conflicts, but one value couldn't be checked. Apply now and get that answer in writing during the recruiter screen, before you accept anything."
+          : "Every rule Litmus can check lines up. Apply, and confirm with OIS before you accept, the letter still has to be reviewed once you have it.",
+        foot: "Recheck the signed letter here when it arrives, postings and letters often disagree.",
+        steps: [
+          { title: "Hit apply", detail: "This posting is worth your time.", action: "" },
+          { title: warnings.length ? "Ask the recruiter for exact weekly hours" : "Ask for the offer in writing", detail: warnings.length ? "Get a single number in writing, not a range." : "You'll need dates, hours, address, and letterhead.", action: "Open the draft", onAct: openEmail(0), primary: !!warnings.length },
+          { title: "Confirm with OIS before you accept", detail: "One short email; do it while the offer is warm.", action: "Open the draft", onAct: openEmail(0) }
+        ]
+      };
+    }
+    const closed = blockers.some(c => c.key === "deadline");
+    return {
+      headline: "Not recommended: this one isn't worth the application.",
+      body: closed
+        ? "The authorization window for this term has already closed, so no version of this listing can be approved in time. A company won't hold a posting for a visa timeline, so treat this as a no for now and ask about the next term instead."
+        : "There " + (blockers.length === 1 ? "is one conflict" : "are " + blockers.length + " conflicts") + " between this listing and the published rules, and every one of them is something only the employer could change. Companies rarely rewrite a posting for someone who hasn't interviewed yet, so this is a poor use of your next two weeks.",
+      foot: "This isn't a rejection, it's a cost estimate. Spend the time on a listing that already fits, and keep this employer for a later term.",
+      steps: [
+        { title: "Pass on this one for now", detail: closed ? "Nothing you or the employer can do gets it authorized this term." : "The changes needed sit entirely on the employer's side.", action: "" },
+        { title: "Ask OIS whether any version of it works", detail: "Worth one short email before you write it off completely.", action: "Open the draft", onAct: openEmail(0), primary: true },
+        { title: "Only if you're set on this employer", detail: "Ask about a compliant role or a later term. Expect a slow answer, and don't wait on it.", action: "Open the draft", onAct: openEmail(1) }
+      ]
+    };
+  }
+
+  renderVals() {
+    const st = this.state;
+    const s = SAMPLES[st.sample];
+    const fields = st.fields || Object.assign({}, s.fields);
+    const tone = this.props.blockerEmphasis || "medium";
+    const seg = (on) => on
+      ? { bg: "#1c1b19", border: "#1c1b19", color: "#fbfaf8", weight: "500" }
+      : { bg: "#fdfdfc", border: "rgba(28,27,25,.16)", color: "#3d3b37", weight: "400" };
+
+    const detected = st.docType || detect(st.raw);
+    const isLetter = detected === "letter";
+    const docLabel = isLetter ? "offer letter" : "job listing";
+    const docShort = isLetter ? "letter" : "listing";
+    const stepIdx = st.step === "input" ? 0 : st.step === "results" ? 2 : 1;
+
+    const built = this.buildChecks(s, fields, isLetter);
+    let ordered = built.slice();
+    if (tone === "loud") ordered.sort((a, b) => ORDER[a.status] - ORDER[b.status]);
+
+    const checkRows = ordered.map((c, i) => {
+      const k = STATUS[c.status];
+      const isOpen = !!st.open[c.title];
+      return {
+        status: c.status, title: c.title, offer: c.offer, rule: c.rule, nextStep: c.next,
+        num: i + 1 < 10 ? "0" + (i + 1) : String(i + 1),
+        chipBg: k.chipBg, chipColor: k.chipColor, chipBorder: k.chipBorder,
+        rowBg: tone === "quiet" ? "transparent" : k.tint,
+        offerColor: c.status === "pass" ? "#3d3b37" : k.chipColor,
+        sourceLabel: "OIS, " + c.src.name,
+        sourceQuote: "\u201c" + c.src.quote + "\u201d",
+        sourceCite: c.src.cite,
+        sourceDisplay: isOpen ? "block" : "none",
+        caret: isOpen ? "\u2212" : "+",
+        onToggle: () => this.setState(p => {
+          const open = Object.assign({}, p.open);
+          open[c.title] = !open[c.title];
+          return { open: open };
+        })
+      };
+    });
+
+    const nBlock = built.filter(c => c.status === "blocker").length;
+    const nWarn = built.filter(c => c.status === "warning").length;
+    const parts = [];
+    if (nBlock) parts.push(nBlock + (nBlock === 1 ? " hard conflict" : " hard conflicts"));
+    if (nWarn) parts.push(nWarn + (nWarn === 1 ? " warning" : " warnings"));
+    const summaryCount = parts.length ? parts.join(" · ") : "No conflicts found";
+    const hoursBlank = !String(fields.hours || "").trim();
+    const summaryLead = hoursBlank
+      ? "The " + docShort + " never states weekly hours, so that check couldn't be run" + (nBlock ? "; the conflicts below are the ones that don't depend on it." : ", nothing else collides.")
+      : s.lead;
+
+    const missingComplete = s.completeness.filter(x => !x.ok).length;
+    const ready = st.raw.trim().length > 0 && st.level && st.year && st.finalSem;
+    const sig = [fields.employer, fields.start, fields.end, fields.hours, fields.location, detected, st.year, st.finalSem].join("|");
+    const wn = this.whatNow(s, built, isLetter, fields);
+    const drafts = this.drafts(s, fields, built, isLetter);
+    const draft = drafts[Math.min(st.draftIdx, drafts.length - 1)] || drafts[0];
+
+    return {
+      stepsDisplay: st.step === "tracker" || st.step === "signin" ? "none" : "flex",
+      trackerNavDisplay: st.signedIn ? "block" : "none",
+      trackerNavColor: st.step === "tracker" ? "#1c1b19" : "#b0ada6",
+      onNavTracker: () => this.setState({ step: "tracker" }),
+      accountDisplay: st.signedIn ? "block" : "none",
+      accountLabel: st.email || "amara@usc.edu",
+
+      isSignin: st.step === "signin", isTracker: st.step === "tracker",
+      email: st.email,
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      onSignin: () => this.setState({ signedIn: true, email: st.email || "amara@usc.edu", step: "tracker", saved: true }),
+      signinPoints: [
+        { mark: "✓", color: "oklch(0.5 0.09 155)", text: "Your checks, sorted into hard no, maybe, and all clear, so you can see where your time is going." },
+        { mark: "✓", color: "oklch(0.5 0.09 155)", text: "Separate boards for listings you're considering and offers you've received, because the stakes differ." },
+        { mark: "✓", color: "oklch(0.5 0.09 155)", text: "Your school's rules preset from your email domain, so you stop seeing \u201cyour school's\u201d everywhere." },
+        { mark: "✕", color: "#a3a09a", text: "No I-20, no SEVIS number, no immigration record. Litmus never becomes a place your status is stored." }
+      ],
+      saveLabel: st.saved ? "Saved to tracker ✓" : (st.signedIn ? "Save to tracker" : "Save to tracker"),
+      onSave: () => this.setState(st.signedIn ? { step: "tracker", saved: true } : { step: "signin" }),
+
+      trackerTitle: st.board === "jd" ? "Listings you're considering" : "Offers you've received",
+      trackerSub: st.board === "jd"
+        ? "Six listings checked. Three aren't worth an application, two are waiting on an hours number, one is clean."
+        : "Three offers checked. One needs an amended letter, one needs letterhead, one is ready to submit.",
+      boardTabs: [["jd", "Job listings"], ["offer", "Offers"]].map(pair => Object.assign({ label: pair[1] }, seg(st.board === pair[0]), {
+        onPick: () => this.setState({ board: pair[0] })
+      })),
+      trackerColumns: COLS.map(col => {
+        const cards = (TRACK[st.board] || []).filter(c => c.col === col.key);
+        return {
+          title: col.title, blurb: col.blurb, count: cards.length,
+          titleColor: "oklch(0.45 0.1 " + col.hue + ")",
+          colBg: col.key === "clear" ? "#fbfaf8" : "oklch(0.988 0.012 " + col.hue + ")",
+          colBorder: "oklch(0.9 0.03 " + col.hue + ")",
+          emptyDisplay: cards.length ? "none" : "block",
+          emptyCopy: col.key === "no" ? "Nothing here. Good." : col.key === "maybe" ? "No open questions right now." : "Nothing clean yet.",
+          cards: cards.map(c => ({
+            role: c.role, employer: c.employer, reason: c.reason, checked: c.checked,
+            meta: c.meta.map(t => ({ text: t })),
+            dot: "oklch(0.55 0.13 " + col.hue + ")",
+            reasonColor: col.key === "clear" ? "#5f5c56" : "#4a4640",
+            cta: c.sample ? "Open check" : "Re-check",
+            onOpen: () => { if (c.sample) this.jump(c.sample, false); }
+          }))
+        };
+      }),
+
+      steps: ["Paste", "Confirm", "Results"].map((label, i) => ({
+        label: (i + 1) + " " + label,
+        color: i === stepIdx ? "#1c1b19" : "#b0ada6"
+      })),
+      isInput: st.step === "input", isConfirm: st.step === "confirm",
+      isLoading: st.step === "loading", isResults: st.step === "results",
+      monoFamily: MONO[this.props.labelFace] || MONO["No mono (sans)"],
+      labelWeight: String(this.props.labelFace || "No mono (sans)").indexOf("No mono") === 0 ? 600 : 500,
+      wordOpacity: st.wordOn === false ? 0 : 1,
+      schoolWord: this.props.schoolCycle === false ? "your school's" : SCHOOLS[st.schoolIdx],
+
+      raw: st.raw,
+      charCount: st.raw.length ? st.raw.length.toLocaleString() + " chars" : "",
+      onRaw: (e) => this.setState({ raw: e.target.value, docType: "" }),
+      docLabel: docLabel,
+      detectDisplay: detected && st.raw.trim().length > 40 ? "flex" : "none",
+      detectNote: isLetter
+        ? "Holding it to the standard for a letter submitted to OIS."
+        : "Postings often leave out hours, that's expected, and I'll say so rather than guess.",
+      onUpload: () => this.prefill("C"),
+      sampleLinks: ["A", "B", "C"].map(k => ({ label: SAMPLES[k].label, onPick: () => this.prefill(k) })),
+
+      hasLevel: !!st.level, hasYear: !!st.year,
+      levelOptions: LEVELS.map(pair => Object.assign({ label: pair[1] }, seg(st.level === pair[0]), {
+        onPick: () => this.setState({ level: pair[0], year: "", finalSem: "" })
+      })),
+      yearOptions: (YEARS[st.level] || []).map(label => Object.assign({ label: label }, seg(st.year === label), {
+        onPick: () => this.setState({ year: label, finalSem: "" })
+      })),
+      finalOptions: [["yes", "Yes"], ["no", "No"]].map(pair => Object.assign({ label: pair[1] }, seg(st.finalSem === pair[0]), {
+        onPick: () => this.setState({ finalSem: pair[0] })
+      })),
+
+      checkDisabled: !ready,
+      checkCursor: ready ? "pointer" : "default",
+      checkBg: ready ? "#1c1b19" : "#eceae5",
+      checkColor: ready ? "#fbfaf8" : "#b0ada6",
+      checkBorder: ready ? "#1c1b19" : "transparent",
+      checkHint: ready ? "Nothing is stored or sent to your school." : "Paste an offer and answer all three above.",
+      onCheck: () => {
+        const f = Object.assign({}, s.fields);
+        this.setState({ fields: f, docType: detected, open: {} });
+        if (st.lastSig) this.setState({ step: "confirm" });
+        else this.runLoading("confirm");
+      },
+
+      confirmHeadline: isLetter ? "Here's what I pulled from your offer letter." : "Here's what I pulled from the listing.",
+      docChip: isLetter ? "Reading an offer letter" : "Reading a job listing",
+      docSwitchNote: isLetter ? "Held to the standard OIS applies to a letter." : "Judged as a posting, not a signed offer.",
+      docSwitchLabel: isLetter ? "It's a job listing, actually" : "It's an offer letter, actually",
+      onSwitchDoc: () => this.setState({ docType: isLetter ? "jd" : "letter" }),
+
+      hasMissing: !!st.missing.hours,
+      missingCopy: isLetter
+        ? "I couldn't find weekly hours in this letter. OIS won't accept a letter without exact hours, add the number if you know it, and ask for an amended letter either way."
+        : "I couldn't find weekly hours in this listing, most public postings leave them out. Add a number if the recruiter has told you one; leave it blank and Litmus will flag the hours check as unresolved instead of guessing.",
+      fieldRows: [
+        ["employer", "Employer", "Legal name as it appears on the letter", "Acme Inc."],
+        ["start", "Start date", "First day of work", "Aug 24, 2026"],
+        ["end", "End date", "Last day of work", "Dec 11, 2026"],
+        ["hours", "Weekly hours", isLetter ? "A single number, not a range" : "Often absent from public postings, fine to leave blank", "20 hrs/wk"],
+        ["location", "Work location", "City and state of the physical site", "Los Angeles, CA"]
+      ].map(def => {
+        const key = def[0];
+        const flagged = !!st.missing[key] && !String(fields[key] || "").trim();
+        return {
+          label: def[1], hint: def[2], placeholder: def[3], value: fields[key] || "",
+          bg: flagged ? "oklch(0.985 0.02 85)" : "#fdfdfc",
+          border: flagged ? "oklch(0.82 0.08 85)" : "rgba(28,27,25,.16)",
+          flagDisplay: flagged ? "block" : "none",
+          flagCopy: isLetter ? "couldn't find this, the letter needs it." : "couldn't find this, add it, or leave blank and we'll flag the check.",
+          onChange: (e) => {
+            const v = e.target.value;
+            this.setState(p => {
+              const nf = Object.assign({}, p.fields || s.fields);
+              nf[key] = v;
+              return { fields: nf };
+            });
+          }
+        };
+      }),
+      onRun: () => {
+        if (st.lastSig && st.lastSig === sig) this.setState({ step: "results" });
+        else { this.setState({ lastSig: sig }); this.runLoading("results"); }
+      },
+      onBack: () => this.setState({ step: "confirm" }),
+      onRestart: () => this.setState({ step: "input" }),
+
+      loadingLines: ["Reading the " + docShort, "Matching the CPT term", "Comparing dates and deadlines", "Comparing weekly hours", "Checking the commute zone"].map((label, i) => ({
+        label: label,
+        mark: st.loadIdx > i ? "\u2713" : "\u00b7",
+        color: st.loadIdx > i ? "#2a2825" : "#a3a09a",
+        opacity: st.loadIdx >= i ? 1 : 0.35,
+        anim: st.loadIdx === i ? "lit-pulse 1s ease-in-out infinite" : "none"
+      })),
+
+      resultKicker: (isLetter ? "Offer letter" : "Job listing") + " · " + s.employerShort,
+      offerColLabel: isLetter ? "Your letter" : "This listing",
+      summaryCount: summaryCount,
+      summaryColor: nBlock ? "#1c1b19" : nWarn ? "#1c1b19" : "oklch(0.42 0.09 155)",
+      summaryLead: summaryLead,
+      checkRows: checkRows,
+      completenessLead: (isLetter
+        ? "Your school requires all six of these in the letter you submit. "
+        : "A posting isn't a letter, but these are the six elements the letter will need, and this is what the posting already gives you. ")
+        + (missingComplete ? missingComplete + " " + (missingComplete === 1 ? "item is" : "items are") + " missing." : "All six are present."),
+      completeness: s.completeness.map(x => ({
+        label: x.label,
+        mark: x.ok ? "\u2713" : "\u2715",
+        markColor: x.ok ? "oklch(0.5 0.09 155)" : "oklch(0.52 0.13 25)",
+        note: x.note || "",
+        noteColor: "oklch(0.5 0.09 40)",
+        noteDisplay: x.note ? "block" : "none"
+      })),
+
+      whatNowHeadline: wn.headline,
+      whatNowBody: wn.body,
+      whatNowFoot: wn.foot,
+      whatNowSteps: wn.steps.map((w, i) => ({
+        num: "0" + (i + 1),
+        title: w.title, detail: w.detail, action: w.action || "",
+        btnDisplay: w.action ? "block" : "none",
+        btnBg: "#1c1b19",
+        btnColor: "#fbfaf8",
+        btnBorder: "#1c1b19",
+        onAct: w.onAct || (() => {})
+      })),
+
+      inputSummary: [
+        { label: "Document", value: isLetter ? "Offer letter" : "Job listing" },
+        { label: "Employer", value: fields.employer },
+        { label: "Dates", value: fields.start + " – " + fields.end },
+        { label: "Hours", value: fields.hours || "Not stated" },
+        { label: "Location", value: fields.location },
+        { label: "Standing", value: st.year + (st.finalSem === "yes" ? " · final semester" : "") }
+      ],
+      copyLabel: st.copied ? "Copied \u2713" : "Copy the summary",
+      onCopy: () => {
+        const lines = ["CPT check, " + fields.employer + " (" + summaryCount + ")", "Document: " + (isLetter ? "offer letter" : "job listing"), ""];
+        built.forEach(c => lines.push("[" + c.status.toUpperCase() + "] " + c.title + ", " + docShort + ": " + c.offer + " / published rule: " + c.rule + "\n  " + c.next + "\n  Source: OIS, " + c.src.name));
+        lines.push("", "Generated by Litmus. Not an eligibility decision, requesting OIS confirmation.");
+        try { navigator.clipboard.writeText(lines.join("\n")); } catch (e) {}
+        this.setState({ copied: true });
+        setTimeout(() => this.setState({ copied: false }), 2200);
+      },
+      onPrint: () => window.print(),
+
+      emailOpen: st.emailOpen,
+      onOpenEmail: () => this.setState({ emailOpen: true, draftIdx: 0, draftCopied: false }),
+      onCloseEmail: () => this.setState({ emailOpen: false }),
+      draftTitle: draft.label === "To OIS" ? "Email to your international office" : "Email to " + (isLetter ? "the employer" : "the recruiter"),
+      draftTabs: drafts.map((d, i) => Object.assign({ label: d.label }, seg(i === Math.min(st.draftIdx, drafts.length - 1)), {
+        onPick: () => this.setState({ draftIdx: i, draftCopied: false })
+      })),
+      draftTo: draft.to,
+      draftSubject: draft.subject,
+      draftBody: draft.body,
+      draftCopyLabel: st.draftCopied ? "Copied \u2713" : "Copy the draft",
+      onCopyDraft: () => {
+        try { navigator.clipboard.writeText("Subject: " + draft.subject + "\n\n" + draft.body); } catch (e) {}
+        this.setState({ draftCopied: true });
+        setTimeout(() => this.setState({ draftCopied: false }), 2200);
+      },
+
+      stateSwitcher: [
+        { label: "Screen 1", on: st.step === "input", onPick: () => this.setState({ step: "input", raw: "", level: "", year: "", finalSem: "", fields: null, docType: "", missing: {}, emailOpen: false, lastSig: "" }) },
+        { label: "No hours (JD)", on: st.step === "confirm" && !!st.missing.hours, onPick: () => this.jump("A", true) },
+        { label: "A · listing, 3 conflicts", on: st.step === "results" && st.sample === "A", onPick: () => this.jump("A", false) },
+        { label: "B · listing, location", on: st.step === "results" && st.sample === "B", onPick: () => this.jump("B", false) },
+        { label: "C · letter, all clear", on: st.step === "results" && st.sample === "C", onPick: () => this.jump("C", false) },
+        { label: "Sign in", on: st.step === "signin", onPick: () => this.setState({ step: "signin" }) },
+        { label: "Tracker", on: st.step === "tracker", onPick: () => this.setState({ step: "tracker", signedIn: true, email: st.email || "amara@usc.edu" }) }
+      ].map(x => ({
+        label: x.label, onPick: x.onPick,
+        bg: x.on ? "#fbfaf8" : "transparent",
+        color: x.on ? "#1c1b19" : "rgba(251,250,248,.62)"
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
