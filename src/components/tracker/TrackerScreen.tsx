@@ -1,20 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthUser } from "@/lib/supabase/useAuthUser";
+import { createClient } from "@/lib/supabase/client";
+import { listSavedChecks, upsertSavedCheck } from "@/lib/supabase/trackerData";
 import { useAppStore } from "@/lib/store/useAppStore";
-import { buildTrackerSubtitle } from "@/lib/checkFlow";
+import { buildSavedCheckPayload, buildTrackerSubtitle } from "@/lib/checkFlow";
 import { TRACKER_COLUMNS, EMPTY_COLUMN_COPY } from "@/lib/trackerColumns";
-import { TrackerBoard } from "@/lib/types";
+import { SavedCheck, TrackerBoard } from "@/lib/types";
 import TrackerCard from "@/components/tracker/TrackerCard";
 
 export default function TrackerScreen() {
   const router = useRouter();
-  const [board, setBoard] = useState<TrackerBoard>("jd");
-  const boardChecks = useAppStore((s) => s.boardChecks);
+  const { user, loading: authLoading } = useAuthUser();
+  const currentResult = useAppStore((s) => s.currentResult);
+  const clearCurrentResult = useAppStore((s) => s.clearCurrentResult);
   const loadFlowFromSaved = useAppStore((s) => s.loadFlowFromSaved);
 
-  const checks = boardChecks(board);
+  const [board, setBoard] = useState<TrackerBoard>("jd");
+  const [checks, setChecks] = useState<SavedCheck[]>([]);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  const [refreshTick, setRefreshTick] = useState(0);
+  const autoSaved = useRef(false);
+
+  const fetchKey = `${board}:${refreshTick}`;
+  const loadingChecks = loadedKey !== fetchKey;
+
+  useEffect(() => {
+    if (!authLoading && !user) router.replace("/signin");
+  }, [authLoading, user, router]);
+
+  useEffect(() => {
+    if (!user || autoSaved.current || !currentResult) return;
+    autoSaved.current = true;
+    upsertSavedCheck(createClient(), user.id, buildSavedCheckPayload(currentResult)).then(() => {
+      clearCurrentResult();
+      setRefreshTick((t) => t + 1);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    listSavedChecks(createClient(), board).then((data) => {
+      setChecks(data);
+      setLoadedKey(fetchKey);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, board, refreshTick]);
 
   function handleRecheck(id: string) {
     const saved = checks.find((c) => c.id === id);
@@ -22,6 +56,8 @@ export default function TrackerScreen() {
     loadFlowFromSaved(saved);
     router.push("/confirm");
   }
+
+  if (!user) return null;
 
   return (
     <div className="pt-11 pb-14 animate-lit-in">
@@ -34,7 +70,7 @@ export default function TrackerScreen() {
             {board === "jd" ? "Listings you're considering" : "Offers you've received"}
           </h1>
           <p className="text-[14px] leading-[1.55] text-body-muted max-w-[64ch] text-pretty">
-            {buildTrackerSubtitle(board, checks)}
+            {loadingChecks ? "Loading…" : buildTrackerSubtitle(board, checks)}
           </p>
         </div>
         <div className="ml-auto flex gap-1.5">

@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAppStore } from "@/lib/store/useAppStore";
-import { buildSavedCheckPayload } from "@/lib/checkFlow";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 const POINTS: { mark: string; color: string; text: string }[] = [
   {
@@ -30,16 +29,21 @@ const POINTS: { mark: string; color: string; text: string }[] = [
 
 export default function SigninScreen() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
-  const signIn = useAppStore((s) => s.signIn);
-  const currentResult = useAppStore((s) => s.currentResult);
-  const saveCheck = useAppStore((s) => s.saveCheck);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    searchParams.get("error") ? "error" : "idle",
+  );
 
-  function handleSignin() {
+  async function handleSignin() {
     if (!email.trim()) return;
-    signIn(email.trim());
-    if (currentResult) saveCheck(buildSavedCheckPayload(currentResult));
-    router.push("/tracker");
+    setStatus("sending");
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithOtp({
+      email: email.trim(),
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+    });
+    setStatus(error ? "error" : "sent");
   }
 
   return (
@@ -73,39 +77,58 @@ export default function SigninScreen() {
         <div className="font-serif text-[21px] font-medium tracking-[-0.01em] mb-[18px]">
           Sign in to save this check
         </div>
-        <label htmlFor="email" className="block text-[12px] font-medium text-label mb-[7px]">
-          School email
-        </label>
-        <input
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@usc.edu"
-          className="w-full px-[13px] py-[11px] text-[13.5px] text-ink bg-surface-input border border-[rgba(28,27,25,.16)] rounded-[4px] outline-none mb-2 focus:border-[oklch(0.48_0.075_250_/_0.55)] focus:shadow-[0_0_0_3px_oklch(0.48_0.075_250_/_0.09)]"
-        />
-        <div className="text-[11.5px] leading-[1.45] text-faint mb-[18px]">
-          We use the domain to set your school&apos;s rules. No transcript, no
-          I-20, no SEVIS number.
-        </div>
-        <button
-          onClick={handleSignin}
-          className="w-full py-[13px] text-[14px] font-medium rounded-[4px] cursor-pointer bg-ink text-[#fbfaf8] border border-ink hover:bg-[#332f2a]"
-        >
-          Email me a sign-in link
-        </button>
-        <div className="flex items-center gap-3 my-[18px]">
-          <span className="h-px bg-[rgba(28,27,25,.12)] flex-1" />
-          <span className="font-sans font-semibold text-[9.5px] tracking-[.1em] uppercase text-faintest">
-            or
-          </span>
-          <span className="h-px bg-[rgba(28,27,25,.12)] flex-1" />
-        </div>
-        <button
-          onClick={handleSignin}
-          className="w-full py-[13px] text-[13.5px] rounded-[4px] cursor-pointer bg-transparent text-ink-2 border border-[rgba(28,27,25,.2)] hover:border-[rgba(28,27,25,.4)]"
-        >
-          Continue with your university SSO
-        </button>
+
+        {status === "sent" ? (
+          <div className="text-[13.5px] leading-[1.55] text-body">
+            Check <strong className="font-semibold">{email.trim()}</strong> for a sign-in link.
+            It&apos;ll bring you right back here, signed in.
+          </div>
+        ) : (
+          <>
+            <label htmlFor="email" className="block text-[12px] font-medium text-label mb-[7px]">
+              School email
+            </label>
+            <input
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@usc.edu"
+              className="w-full px-[13px] py-[11px] text-[13.5px] text-ink bg-surface-input border border-[rgba(28,27,25,.16)] rounded-[4px] outline-none mb-2 focus:border-[oklch(0.48_0.075_250_/_0.55)] focus:shadow-[0_0_0_3px_oklch(0.48_0.075_250_/_0.09)]"
+            />
+            <div className="text-[11.5px] leading-[1.45] text-faint mb-[18px]">
+              We use the domain to set your school&apos;s rules. No transcript, no
+              I-20, no SEVIS number.
+            </div>
+            {status === "error" && (
+              <div className="text-[11.5px] text-[oklch(0.48_0.14_25)] mb-2">
+                {searchParams.get("error")
+                  ? "That sign-in link didn't work, it may have expired. Request a new one."
+                  : "Couldn't send that link, check the address and try again."}
+              </div>
+            )}
+            <button
+              onClick={handleSignin}
+              disabled={status === "sending"}
+              className="w-full py-[13px] text-[14px] font-medium rounded-[4px] cursor-pointer bg-ink text-[#fbfaf8] border border-ink hover:bg-[#332f2a] disabled:opacity-60"
+            >
+              {status === "sending" ? "Sending…" : "Email me a sign-in link"}
+            </button>
+            <div className="flex items-center gap-3 my-[18px]">
+              <span className="h-px bg-[rgba(28,27,25,.12)] flex-1" />
+              <span className="font-sans font-semibold text-[9.5px] tracking-[.1em] uppercase text-faintest">
+                or
+              </span>
+              <span className="h-px bg-[rgba(28,27,25,.12)] flex-1" />
+            </div>
+            <button
+              disabled
+              title="Not wired up to a school identity provider yet"
+              className="w-full py-[13px] text-[13.5px] rounded-[4px] bg-transparent text-faintest border border-[rgba(28,27,25,.14)] cursor-not-allowed"
+            >
+              Continue with your university SSO (coming soon)
+            </button>
+          </>
+        )}
         <button
           onClick={() => router.push("/")}
           className="w-full mt-4 bg-transparent border-0 p-0 text-[12.5px] text-muted cursor-pointer hover:text-ink"

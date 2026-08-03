@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAppStore } from "@/lib/store/useAppStore";
+import { useAuthUser } from "@/lib/supabase/useAuthUser";
 
 const STEPS: { label: string; match: (path: string) => boolean }[] = [
   { label: "1 Paste", match: (p) => p === "/" },
@@ -12,8 +12,9 @@ const STEPS: { label: string; match: (path: string) => boolean }[] = [
 
 export default function Header() {
   const pathname = usePathname();
-  const signedIn = useAppStore((s) => s.auth.signedIn);
-  const email = useAppStore((s) => s.auth.email);
+  const { user } = useAuthUser();
+  const signedIn = !!user;
+  const email = user?.email ?? "";
 
   const showSteps = !["/signin", "/tracker"].includes(pathname);
   const activeIdx = STEPS.findIndex((s) => s.match(pathname));

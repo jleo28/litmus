@@ -12,7 +12,6 @@ import {
   SavedCheck,
   Standing,
   StandingLevel,
-  TrackerBoard,
 } from "@/lib/types";
 
 interface FlowState {
@@ -24,15 +23,6 @@ interface FlowState {
   lastSig: string;
 }
 
-function sameEntry(a: SavedCheck, b: Omit<SavedCheck, "id" | "checkedAt">): boolean {
-  return (
-    a.board === b.board &&
-    a.fields.employer === b.fields.employer &&
-    a.fields.start === b.fields.start &&
-    a.fields.end === b.fields.end
-  );
-}
-
 const emptyFlow: FlowState = {
   raw: "",
   docType: "",
@@ -42,17 +32,11 @@ const emptyFlow: FlowState = {
   lastSig: "",
 };
 
-interface AuthState {
-  signedIn: boolean;
-  email: string;
-}
-
 interface AppState {
   flow: FlowState;
-  auth: AuthState;
-  savedChecks: SavedCheck[];
   currentResult: CurrentResult | null;
   setCurrentResult: (result: CurrentResult) => void;
+  clearCurrentResult: () => void;
 
   setRaw: (raw: string) => void;
   setDocType: (docType: DocType) => void;
@@ -64,22 +48,15 @@ interface AppState {
   setLastSig: (sig: string) => void;
   resetFlow: () => void;
   loadFlowFromSaved: (saved: SavedCheck) => void;
-
-  signIn: (email: string) => void;
-  signOut: () => void;
-
-  saveCheck: (check: Omit<SavedCheck, "id" | "checkedAt">) => void;
-  boardChecks: (board: TrackerBoard) => SavedCheck[];
 }
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       flow: emptyFlow,
-      auth: { signedIn: false, email: "" },
-      savedChecks: [],
       currentResult: null,
       setCurrentResult: (currentResult) => set({ currentResult }),
+      clearCurrentResult: () => set({ currentResult: null }),
 
       setRaw: (raw) =>
         set((s) => ({ flow: { ...s.flow, raw, docType: "" } })),
@@ -121,33 +98,11 @@ export const useAppStore = create<AppState>()(
             lastSig: "",
           },
         }),
-
-      signIn: (email) => set({ auth: { signedIn: true, email } }),
-      signOut: () => set({ auth: { signedIn: false, email: "" } }),
-
-      saveCheck: (check) =>
-        set((s) => {
-          const idx = s.savedChecks.findIndex((c) => sameEntry(c, check));
-          const checkedAt = new Date().toISOString();
-          if (idx > -1) {
-            const updated = [...s.savedChecks];
-            updated[idx] = { ...updated[idx], ...check, checkedAt };
-            return { savedChecks: updated };
-          }
-          const id =
-            typeof crypto !== "undefined" && "randomUUID" in crypto
-              ? crypto.randomUUID()
-              : String(Date.now());
-          return { savedChecks: [{ ...check, id, checkedAt }, ...s.savedChecks] };
-        }),
-      boardChecks: (board) =>
-        get().savedChecks.filter((c) => c.board === board),
     }),
     {
       name: "litmus-store",
       partialize: (s) => ({
-        auth: s.auth,
-        savedChecks: s.savedChecks,
+        currentResult: s.currentResult,
       }),
     },
   ),
