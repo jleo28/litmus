@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthUser } from "@/lib/supabase/useAuthUser";
+import LitmusWordmark from "@/components/brand/LitmusWordmark";
 
 const STEPS: { label: string; match: (path: string) => boolean }[] = [
   { label: "1 Paste", match: (p) => p === "/" },
@@ -27,9 +28,10 @@ export default function Header() {
       <div className="max-w-[1280px] mx-auto px-14 h-[62px] flex items-center gap-7">
         <Link
           href="/"
-          className="font-serif text-[23px] font-medium tracking-[-0.015em] text-ink !border-0"
+          title="Back to home"
+          className="!border-0 transition-opacity duration-[180ms] ease hover:opacity-[.62]"
         >
-          Litmus
+          <LitmusWordmark fontSize={23} flaskSize={4} flaskStrokeWidth={3.4} flaskBottom={17} />
         </Link>
         <nav className="ml-auto flex items-center gap-[22px]">
           {showSteps && (

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Newsreader, IBM_Plex_Sans } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SplashScreen from "@/components/shared/SplashScreen";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -34,6 +35,7 @@ export default function RootLayout({
       className={`${newsreader.variable} ${ibmPlexSans.variable} h-full`}
     >
       <body className="min-h-screen flex flex-col bg-page font-sans text-ink antialiased">
+        <SplashScreen />
         <Header />
         <main className="flex-1 w-full max-w-[1280px] mx-auto px-14">
           {children}
