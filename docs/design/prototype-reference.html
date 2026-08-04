@@ -7,10 +7,10 @@
 </head>
 <body>
 <x-dc>
-<helmet data-dc-atomics>
+<helmet data-dc-atomics="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=IBM+Plex+Sans:wght@400;450;500;600&family=IBM+Plex+Mono:wght@400;500&family=DM+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Geist+Mono:wght@400;500&family=Azeret+Mono:wght@400;500&family=Spline+Sans+Mono:wght@400;500&family=Red+Hat+Mono:wght@400;500&family=Sometype+Mono:wght@400;500&family=Martian+Mono:wght@400;500&family=Chivo+Mono:wght@400;500&family=Kode+Mono:wght@400;500&family=Reddit+Mono:wght@400;500&family=Inconsolata:wght@400;500&family=Source+Code+Pro:wght@400;500&family=Victor+Mono:wght@400;500&family=Noto+Sans+Mono:wght@400;500&family=Fragment+Mono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&amp;family=IBM+Plex+Sans:wght@400;450;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=DM+Mono:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Geist+Mono:wght@400;500&amp;family=Azeret+Mono:wght@400;500&amp;family=Spline+Sans+Mono:wght@400;500&amp;family=Red+Hat+Mono:wght@400;500&amp;family=Sometype+Mono:wght@400;500&amp;family=Martian+Mono:wght@400;500&amp;family=Chivo+Mono:wght@400;500&amp;family=Kode+Mono:wght@400;500&amp;family=Reddit+Mono:wght@400;500&amp;family=Inconsolata:wght@400;500&amp;family=Source+Code+Pro:wght@400;500&amp;family=Victor+Mono:wght@400;500&amp;family=Noto+Sans+Mono:wght@400;500&amp;family=Fragment+Mono&amp;display=swap" rel="stylesheet">
 <style>
 html,body{margin:0;padding:0}
 body{background:#f7f6f3;color:#1c1b19;font-family:"IBM Plex Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -23,18 +23,32 @@ button,textarea,select,input{font-family:inherit}
 @keyframes lit-pulse{0%,100%{opacity:.3}50%{opacity:1}}
 @keyframes lit-word{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 @keyframes lit-pop{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes lit-flip{
+0%{transform:translateX(calc(-50% + 2px)) translateY(0) rotate(0deg)}
+16%{transform:translateX(calc(-50% + 2px)) translateY(-26px) rotate(62deg)}
+38%{transform:translateX(calc(-50% + 2px)) translateY(-46px) rotate(158deg)}
+58%{transform:translateX(calc(-50% + 2px)) translateY(-42px) rotate(238deg)}
+82%{transform:translateX(calc(-50% + 2px)) translateY(-14px) rotate(330deg)}
+92%{transform:translateX(calc(-50% + 2px)) translateY(0) rotate(360deg)}
+96%{transform:translateX(calc(-50% + 2px)) translateY(0) rotate(360deg) scale(1.1,.88)}
+100%{transform:translateX(calc(-50% + 2px)) translateY(0) rotate(360deg) scale(1,1)}}
+@keyframes lit-mark{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media print{[data-noprint]{display:none !important}body{background:#fff}}
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column;background:#f7f6f3;--mono:{{ monoFamily }};--monoW:{{ labelWeight }}">
 
+  <div data-noprint="1" onClick="{{ onSkipSplash }}" style="position:fixed;inset:0;z-index:200;background:#f7f6f3;display:{{ splashDisplay }};align-items:center;justify-content:center;cursor:pointer;opacity:{{ splashOpacity }};transition:opacity 340ms ease">
+    <div style="font-family:Newsreader,serif;font-size:92px;font-weight:500;letter-spacing:-0.015em;color:#1c1b19;display:inline-flex;align-items:baseline;animation:lit-mark 620ms ease both">L<span style="position:relative;display:inline-block">ı<span style="position:absolute;left:50%;bottom:79px;transform:translateX(calc(-50% + 2px));width:16px;height:16px;display:flex;align-items:flex-end;justify-content:center;line-height:0;transform-origin:50% 100%;animation:lit-flip 1150ms cubic-bezier(.4,.02,.5,.98) 620ms both"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#1c1b19" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M7.4 14.6h9.2l2.6 4.8a1.7 1.7 0 0 1-1.5 2.5H6.3a1.7 1.7 0 0 1-1.5-2.5z" fill="rgba(28,27,25,.2)" stroke="none"></path><path d="M10 2.6v6.6L4.8 19.4a1.7 1.7 0 0 0 1.5 2.5h11.4a1.7 1.7 0 0 0 1.5-2.5L14 9.2V2.6"></path><path d="M9.2 2.6h5.6"></path></svg></span></span>tmus</div>
+  </div>
+
   <header data-noprint="1" style="border-bottom:1px solid rgba(28,27,25,.09);background:#fbfaf8">
     <div style="max-width:1280px;margin:0 auto;padding:0 56px;height:62px;display:flex;align-items:center;gap:28px">
-      <span style="font-family:Newsreader,serif;font-size:23px;font-weight:500;letter-spacing:-0.015em">Litmus</span>
+      <span onClick="{{ onNavHome }}" title="Back to home" style="font-family:Newsreader,serif;font-size:23px;font-weight:500;letter-spacing:-0.015em;display:inline-flex;align-items:baseline;cursor:pointer;color:#1c1b19;transition:opacity .18s ease" style-hover="opacity:.62">L<span style="position:relative;display:inline-block">ı<span style="position:absolute;left:50%;bottom:17px;transform:translateX(calc(-50% + 0.5px));width:4px;height:4px;display:flex;align-items:flex-end;justify-content:center;line-height:0"><svg viewBox="0 0 24 24" width="4" height="4" fill="none" stroke="#1c1b19" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"><path d="M7.4 14.6h9.2l2.6 4.8a1.7 1.7 0 0 1-1.5 2.5H6.3a1.7 1.7 0 0 1-1.5-2.5z" fill="rgba(28,27,25,.2)" stroke="none"></path><path d="M10 2.6v6.6L4.8 19.4a1.7 1.7 0 0 0 1.5 2.5h11.4a1.7 1.7 0 0 0 1.5-2.5L14 9.2V2.6"></path><path d="M9.2 2.6h5.6"></path></svg></span></span>tmus</span>
       <nav style="margin-left:auto;display:flex;align-items:center;gap:22px">
         <div style="display:flex;align-items:center;gap:10px;display:{{ stepsDisplay }}">
           <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
-            <span style="font-family:var(--mono);font-weight:var(--monoW);font-size:10.5px;letter-spacing:.05em;white-space:nowrap;color:{{ s.color }}">{{ s.label }}</span>
+            
           </sc-for>
         </div>
         <button onClick="{{ onNavTracker }}" style="background:none;border:none;padding:0;cursor:pointer;font-family:var(--mono);font-weight:var(--monoW);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;color:{{ trackerNavColor }};display:{{ trackerNavDisplay }}">Tracker</button>
@@ -75,6 +89,7 @@ button,textarea,select,input{font-family:inherit}
           </div>
         </div>
 
+        <div style="display:flex;flex-direction:column;gap:14px">
         <aside style="background:#fbfaf8;border:1px solid rgba(28,27,25,.1);border-radius:6px;padding:24px">
           <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:6px">Required</div>
           <div style="font-family:Newsreader,serif;font-size:20px;font-weight:500;letter-spacing:-0.01em;margin-bottom:5px">Your class standing</div>
@@ -113,6 +128,14 @@ button,textarea,select,input{font-family:inherit}
           <button onClick="{{ onCheck }}" disabled="{{ checkDisabled }}" style="width:100%;margin-top:26px;padding:13px;font-size:14px;font-weight:500;border-radius:4px;cursor:{{ checkCursor }};background:{{ checkBg }};color:{{ checkColor }};border:1px solid {{ checkBorder }}">Check this offer.</button>
           <div style="font-size:11.5px;color:#a3a09a;margin-top:10px;text-align:center;min-height:16px">{{ checkHint }}</div>
         </aside>
+
+        <div style="background:#fbfaf8;border:1px solid rgba(28,27,25,.1);border-radius:6px;padding:20px">
+          <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:6px">Optional</div>
+          <div style="font-family:Newsreader,serif;font-size:19px;font-weight:500;letter-spacing:-0.01em;margin-bottom:5px">Your tracker</div>
+          <p style="font-size:12.5px;line-height:1.5;color:#6f6c66;margin:0 0 16px">Every offer you've checked, side by side.</p>
+          <button onClick="{{ onNavTracker }}" style="width:100%;text-align:left;padding:12px 14px;border-radius:4px;background:#1c1b19;color:#fbfaf8;border:1px solid #1c1b19;cursor:pointer;font-size:13.5px;font-weight:500">Open the tracker →</button>
+        </div>
+        </div>
       </div>
     </sc-if>
 
@@ -257,7 +280,7 @@ button,textarea,select,input{font-family:inherit}
                 </div>
               </sc-for>
             </div>
-            <div style="padding:14px 24px;background:#f4f3ef;font-size:12px;line-height:1.5;color:#6f6c66">{{ whatNowFoot }}</div>
+            
           </div>
 
         </div>
@@ -284,12 +307,13 @@ button,textarea,select,input{font-family:inherit}
           <div data-noprint="1" style="font-size:11.5px;line-height:1.5;color:#a3a09a;padding:0 4px">Rule values shown are as published for 2026–27 and pending OIS verification.</div>
         </aside>
       </div>
+
     </sc-if>
 
     <sc-if value="{{ isSignin }}" hint-placeholder-val="{{ false }}">
       <div style="padding:78px 0 64px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:72px;align-items:start;animation:lit-in .3s ease both">
         <div style="min-width:0;max-width:52ch">
-          <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:14px">Optional, and only for this</div>
+          
           <h1 style="font-family:Newsreader,serif;font-size:38px;line-height:1.15;font-weight:400;letter-spacing:-0.02em;margin:0 0 16px">Keep a record of what you've checked.</h1>
           <p style="font-size:15.5px;line-height:1.6;color:#5f5c56;margin:0 0 28px;text-wrap:pretty">An account does one thing: it saves your checks so you can see, at a glance, which of your twelve applications are worth your time. Litmus still won't decide your eligibility, and it still isn't your school.</p>
           <div style="display:flex;flex-direction:column;gap:14px">
@@ -324,11 +348,11 @@ button,textarea,select,input{font-family:inherit}
           <div style="min-width:0">
             <div style="font-family:var(--mono);font-weight:var(--monoW);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#8d8a84;margin-bottom:12px">Your checks</div>
             <h1 style="font-family:Newsreader,serif;font-size:34px;line-height:1.15;font-weight:400;letter-spacing:-0.02em;margin:0 0 8px">{{ trackerTitle }}</h1>
-            <p style="font-size:14px;line-height:1.55;color:#5f5c56;margin:0;max-width:64ch;text-wrap:pretty">{{ trackerSub }}</p>
+            
           </div>
           <div style="margin-left:auto;display:flex;gap:6px">
             <sc-for list="{{ boardTabs }}" as="t" hint-placeholder-count="2">
-              <button onClick="{{ t.onPick }}" style="padding:9px 15px;font-size:13px;border-radius:4px;cursor:pointer;background:{{ t.bg }};border:1px solid {{ t.border }};color:{{ t.color }};font-weight:{{ t.weight }};white-space:nowrap">{{ t.label }}</button>
+              <button onClick="{{ t.onPick }}" style="padding: 9px 15px; font-size: 13px; border-radius: 4px; cursor: pointer; background: {{ t.bg }}; border: 1px solid {{ t.border }}; color: {{ t.color }}; font-weight: {{ t.weight }}; white-space: nowrap; position: relative">{{ t.label }}</button>
             </sc-for>
           </div>
         </div>
@@ -369,7 +393,7 @@ button,textarea,select,input{font-family:inherit}
 
         <div style="display:flex;align-items:center;gap:18px;margin-top:26px;flex-wrap:wrap">
           <button onClick="{{ onRestart }}" style="padding:12px 20px;font-size:13.5px;font-weight:500;border-radius:4px;cursor:pointer;background:#1c1b19;color:#fbfaf8;border:1px solid #1c1b19" style-hover="background:#332f2a">Check another offer</button>
-          <span style="font-size:12.5px;line-height:1.5;color:#8d8a84;max-width:70ch;text-wrap:pretty">Cards move columns on their own when you re-check them, so an amended letter or a confirmed hours number lands where it belongs. Nothing here is an eligibility decision, and none of it is shared with your school.</span>
+          
         </div>
       </div>
     </sc-if>
@@ -587,16 +611,25 @@ class Component extends DCLogic {
     step: "input", sample: "A", raw: "", level: "", year: "", finalSem: "",
     fields: null, docType: "", missing: {}, open: {}, copied: false, loadIdx: 0, lastSig: "",
     schoolIdx: 0, emailOpen: false, draftIdx: 0, draftCopied: false,
-    signedIn: false, email: "", board: "jd", saved: false, wordOn: true
+    signedIn: false, email: "", board: "jd", saved: false, wordOn: true,
+    splash: true, splashFade: false
+  };
+
+  skipSplash = () => {
+    clearTimeout(this.fadeT); clearTimeout(this.hideT);
+    this.setState({ splashFade: true });
+    this.hideT = setTimeout(() => this.setState({ splash: false }), 340);
   };
 
   componentDidMount() {
+    this.fadeT = setTimeout(() => this.setState({ splashFade: true }), 2050);
+    this.hideT = setTimeout(() => this.setState({ splash: false }), 2420);
     this.school = setInterval(() => {
       this.setState({ wordOn: false });
       setTimeout(() => this.setState(p => ({ schoolIdx: (p.schoolIdx + 1) % SCHOOLS.length, wordOn: true })), 260);
     }, 2600);
   }
-  componentWillUnmount() { clearInterval(this.timer); clearInterval(this.school); }
+  componentWillUnmount() { clearInterval(this.timer); clearInterval(this.school); clearTimeout(this.fadeT); clearTimeout(this.hideT); }
 
   prefill(k) {
     this.setState({
@@ -796,6 +829,7 @@ class Component extends DCLogic {
       trackerNavDisplay: st.signedIn ? "block" : "none",
       trackerNavColor: st.step === "tracker" ? "#1c1b19" : "#b0ada6",
       onNavTracker: () => this.setState({ step: "tracker" }),
+      onNavHome: () => this.setState({ step: "input" }),
       accountDisplay: st.signedIn ? "block" : "none",
       accountLabel: st.email || "amara@usc.edu",
 
@@ -848,6 +882,9 @@ class Component extends DCLogic {
       monoFamily: MONO[this.props.labelFace] || MONO["No mono (sans)"],
       labelWeight: String(this.props.labelFace || "No mono (sans)").indexOf("No mono") === 0 ? 600 : 500,
       wordOpacity: st.wordOn === false ? 0 : 1,
+      splashDisplay: st.splash ? "flex" : "none",
+      splashOpacity: st.splashFade ? 0 : 1,
+      onSkipSplash: this.skipSplash,
       schoolWord: this.props.schoolCycle === false ? "your school's" : SCHOOLS[st.schoolIdx],
 
       raw: st.raw,
