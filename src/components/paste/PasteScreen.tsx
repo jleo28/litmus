@@ -9,6 +9,7 @@ import { computeSignature } from "@/lib/checkFlow";
 import { SAMPLES } from "@/lib/samples";
 import ClassStandingPanel from "@/components/paste/ClassStandingPanel";
 import SchoolWordCycle from "@/components/paste/SchoolWordCycle";
+import TrackerPromptCard from "@/components/paste/TrackerPromptCard";
 import LoadingSequence from "@/components/shared/LoadingSequence";
 
 export default function PasteScreen() {
@@ -153,7 +154,10 @@ export default function PasteScreen() {
         )}
       </div>
 
-      <ClassStandingPanel ready={ready} onCheck={handleCheck} />
+      <div className="flex flex-col gap-3.5">
+        <ClassStandingPanel ready={ready} onCheck={handleCheck} />
+        <TrackerPromptCard />
+      </div>
     </div>
   );
 }
