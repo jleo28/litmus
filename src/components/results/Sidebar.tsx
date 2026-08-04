@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAppStore } from "@/lib/store/useAppStore";
+import { useAuthUser } from "@/lib/supabase/useAuthUser";
+import { createClient } from "@/lib/supabase/client";
+import { upsertSavedCheck } from "@/lib/supabase/trackerData";
 import { CurrentResult } from "@/lib/types";
 import { buildSavedCheckPayload } from "@/lib/checkFlow";
 import { buildSummaryText } from "@/lib/summaryText";
@@ -13,21 +15,26 @@ interface SidebarProps {
 
 export default function Sidebar({ result }: SidebarProps) {
   const router = useRouter();
-  const signedIn = useAppStore((s) => s.auth.signedIn);
-  const saveCheck = useAppStore((s) => s.saveCheck);
+  const { user } = useAuthUser();
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const isLetter = result.docType === "letter";
 
-  function handleSave() {
-    if (!signedIn) {
+  async function handleSave() {
+    if (!user) {
       router.push("/signin");
       return;
     }
-    saveCheck(buildSavedCheckPayload(result));
-    setSaved(true);
-    router.push("/tracker");
+    setSaving(true);
+    try {
+      await upsertSavedCheck(createClient(), user.id, buildSavedCheckPayload(result));
+      setSaved(true);
+      router.push("/tracker");
+    } finally {
+      setSaving(false);
+    }
   }
 
   function handleCopy() {
@@ -45,9 +52,10 @@ export default function Sidebar({ result }: SidebarProps) {
         </div>
         <button
           onClick={handleSave}
-          className="w-full text-left px-3.5 py-3 rounded-[4px] bg-ink text-[#fbfaf8] border border-ink cursor-pointer text-[13.5px] font-medium mb-2 hover:bg-[#332f2a]"
+          disabled={saving}
+          className="w-full text-left px-3.5 py-3 rounded-[4px] bg-ink text-[#fbfaf8] border border-ink cursor-pointer text-[13.5px] font-medium mb-2 hover:bg-[#332f2a] disabled:opacity-60"
         >
-          {saved ? "Saved to tracker ✓" : "Save to tracker"}
+          {saved ? "Saved to tracker ✓" : saving ? "Saving…" : "Save to tracker"}
         </button>
         <button
           onClick={handleCopy}
