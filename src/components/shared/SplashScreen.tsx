@@ -54,7 +54,7 @@ export default function SplashScreen() {
         fontSize={92}
         flaskSize={16}
         flaskStrokeWidth={1.8}
-        flaskBottom={86}
+        flaskBottom={94}
         flaskTranslateX="-50%"
         style={{ animation: "lit-in 620ms ease both" }}
         flaskStyle={{
