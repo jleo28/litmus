@@ -43,8 +43,7 @@ export default function SplashScreen() {
         fontSize={92}
         flaskSize={16}
         flaskStrokeWidth={1.8}
-        flaskBottom={79}
-        flaskTranslateX="calc(-50% + 2px)"
+        flaskBottom={86}
         style={{ animation: "lit-in 620ms ease both" }}
         flaskStyle={{ animation: "lit-flip 1150ms cubic-bezier(.4,.02,.5,.98) 620ms both" }}
       />
