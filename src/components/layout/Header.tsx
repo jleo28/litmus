@@ -29,6 +29,7 @@ export default function Header() {
         <Link
           href="/"
           title="Back to home"
+          aria-label="Litmus"
           className="!border-0 transition-opacity duration-[180ms] ease hover:opacity-[.62]"
         >
           <LitmusWordmark fontSize={23} flaskSize={4} flaskStrokeWidth={3.4} flaskBottom={17} />

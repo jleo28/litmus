@@ -5,6 +5,10 @@ Everything below is new in this round. Specs are given at the prototype's own sc
 
 ## 1. Logo mark: flask replaces the dot on the "i"
 
+> **`LOGO.md` in this folder is the authoritative source for both marks — copy its
+> markup verbatim.** The bullets below are context only; where they read as a
+> ratio/description and `LOGO.md` gives a literal value, `LOGO.md` wins.
+
 The wordmark is now `L` + a **dotless i** (`ı`, U+0131) + `tmus`, with a small
 conical-flask glyph standing in for the i's tittle.
 
@@ -14,12 +18,12 @@ conical-flask glyph standing in for the i's tittle.
 - Flask size **4×4px** at that wordmark size, `stroke-width: 3.4`
   (stroke is scaled up as the glyph shrinks so it still reads).
 - Placement: absolutely positioned over the `ı` stem, horizontally centered
-  (`translateX(-50%)`, no extra nudge — it sits dead-center on the stem),
-  sitting `bottom: 17px` — i.e. roughly a 4–6px gap between the top of the
-  stem and the base of the flask.
-- Stacking: the flask span carries its own `z-index` above the letterforms,
-  so it never gets clipped behind the stem's ink at any point (this matters
-  more once the flask is animating, see #2).
+  (`translateX(calc(-50% + 0.5px))` — the 0.5px is an intentional optical
+  nudge for the stem's own side bearing, not a rounding artifact), sitting
+  `bottom: 17px`, with `line-height: 0` on the flask wrapper (inheriting
+  line-height is what makes it sit low and collide with the stem).
+- No `z-index` needed on the header mark — it's static. (The splash mark
+  does need one; see #2.)
 - Rendered reference: `assets/litmus-logo.png` (4× capture of the final mark).
 
 Ratios to preserve at any size: flask height ≈ **0.175×** the wordmark font size;
@@ -36,9 +40,10 @@ which is the logo itself, enlarged and centered:
   stem, rotates a full 360° forward through a small vertical arc, lands, and takes a
   brief squash-and-settle (`scale(1.1,.88)` → `scale(1,1)`).
 - Flask is 16px at the 92px wordmark (same 0.175 ratio); sits at `bottom: 86px`,
-  centered on the stem (`translateX(-50%)`, no horizontal nudge). Carries the
-  same elevated `z-index` as the header mark, so no frame of the flip lands
-  behind the stem.
+  centered on the stem (`translateX(-50%)`, no horizontal nudge — unlike the
+  header, the splash flask is dead-center). Carries `z-index: 2` so no frame
+  of the flip lands behind the stem; every keyframe repeats `translateX(-50%)`
+  since the animation overwrites `transform` wholesale each frame.
 - Timing: wordmark fades/rises in over 620ms, then the flip runs 1150ms on
   `cubic-bezier(.4,.02,.5,.98)`. Splash begins a 340ms opacity fade at 2050ms and
   unmounts at 2420ms, cutting straight into the app.

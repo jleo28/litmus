@@ -19,7 +19,7 @@ export default function LitmusWordmark({
   flaskSize,
   flaskStrokeWidth,
   flaskBottom,
-  flaskTranslateX = "-50%",
+  flaskTranslateX = "calc(-50% + 0.5px)",
   flaskStyle,
   style,
   className = "",
@@ -33,13 +33,14 @@ export default function LitmusWordmark({
       <span className="relative inline-block">
         ı
         <span
-          className="absolute left-1/2 flex items-end justify-center leading-none z-10"
+          className="absolute left-1/2 flex items-end justify-center"
           style={{
             bottom: flaskBottom,
             width: flaskSize,
             height: flaskSize,
             transform: `translateX(${flaskTranslateX})`,
             transformOrigin: "50% 100%",
+            lineHeight: 0,
             ...flaskStyle,
           }}
         >
