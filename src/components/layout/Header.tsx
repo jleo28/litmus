@@ -32,7 +32,13 @@ export default function Header() {
           aria-label="Litmus"
           className="!border-0 transition-opacity duration-[180ms] ease hover:opacity-[.62]"
         >
-          <LitmusWordmark fontSize={23} flaskSize={4} flaskStrokeWidth={3.4} flaskBottom={19} />
+          <LitmusWordmark
+            fontSize={23}
+            flaskSize={4}
+            flaskStrokeWidth={3.4}
+            flaskBottom={19}
+            flaskClassName="logo-flip"
+          />
         </Link>
         <nav className="ml-auto flex items-center gap-[22px]">
           {showSteps && (

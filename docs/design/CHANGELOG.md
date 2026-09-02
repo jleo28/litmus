@@ -28,8 +28,8 @@ conical-flask glyph standing in for the i's tittle.
   nudge for the stem's own side bearing, not a rounding artifact), sitting
   `bottom: 19px`, with `line-height: 0` on the flask wrapper (inheriting
   line-height is what makes it sit low and collide with the stem).
-- No `z-index` needed on the header mark — it's static. (The splash mark
-  does need one; see #2.)
+- The header mark now animates too (post-handoff addition, see #5), so it
+  carries the same `z-index` treatment as the splash mark for the same reason.
 - Rendered reference: `assets/litmus-logo.png` (4× capture of the final mark).
 
 Ratios to preserve at any size: flask height ≈ **0.175×** the wordmark font size;
@@ -81,6 +81,32 @@ gap between the two. It is scoped to the Home screen only (not on results).
     `#1c1b19` on `#fbfaf8` text, 4px radius, 12/14px padding) → `onNavTracker`,
     which routes to the `tracker` screen.
 - Copy holds the house style: no em dashes, no eligibility verdict language.
+
+## 5. Header logo flips too (post-handoff addition)
+
+Not in the original handoff or `LOGO.md` — added after the splash animation
+shipped, to give the persistent header mark the same bit of life instead of
+sitting static everywhere except the one-time intro.
+
+- Same choreography as the splash flip (`lit-flip`, #2): forward 360° rotation
+  through a small vertical arc, landing with the same squash-and-settle. Same
+  timing too — 620ms delay, 1150ms `cubic-bezier(.4,.02,.5,.98)`.
+- Amplitude is scaled to the header's flask size: the header flask is 4px vs.
+  the splash's 16px (1/4 scale), so the vertical arc is 1/4 the splash's
+  (`-6.5px / -11.5px / -10.5px / -3.5px` vs. `-26px / -46px / -42px / -14px`
+  at the matching keyframes). Rotation degrees and the squash scale are
+  size-independent, so those stay identical to the splash.
+- Every keyframe repeats the header's own horizontal nudge,
+  `translateX(calc(-50% + 0.5px))` — not the splash's plain `-50%` — since the
+  header mark keeps its optical nudge even while animating.
+- `z-index: 2` on the flask, same reasoning as the splash: without it, frames
+  mid-flip render behind the stem.
+- Plays once, on mount (i.e. on a full page load). The header persists across
+  client-side navigation in this app, so it does not replay on every visit to
+  Home, only on a fresh load. Respects `prefers-reduced-motion: reduce`.
+- Lives in `globals.css` as `@keyframes lit-flip-header` + a `.logo-flip`
+  utility class, kept separate from the splash's `lit-flip` keyframes since
+  the pixel amplitudes differ.
 
 ## Unchanged
 

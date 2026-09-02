@@ -151,6 +151,49 @@
   }
 }
 
+/* Same choreography as lit-flip, scaled to the header's 4px flask (1/4 the
+   splash's 16px, so the vertical arc is 1/4 the amplitude). Every frame
+   repeats the header's translateX nudge -- the animation overwrites
+   `transform` wholesale each frame, so dropping it anywhere throws the
+   flask sideways. See docs/design/LOGO.md. */
+@keyframes lit-flip-header {
+  0% {
+    transform: translateX(calc(-50% + 0.5px)) translateY(0) rotate(0deg);
+  }
+  16% {
+    transform: translateX(calc(-50% + 0.5px)) translateY(-6.5px) rotate(62deg);
+  }
+  38% {
+    transform: translateX(calc(-50% + 0.5px)) translateY(-11.5px) rotate(158deg);
+  }
+  58% {
+    transform: translateX(calc(-50% + 0.5px)) translateY(-10.5px) rotate(238deg);
+  }
+  82% {
+    transform: translateX(calc(-50% + 0.5px)) translateY(-3.5px) rotate(330deg);
+  }
+  92% {
+    transform: translateX(calc(-50% + 0.5px)) translateY(0) rotate(360deg);
+  }
+  96% {
+    transform: translateX(calc(-50% + 0.5px)) translateY(0) rotate(360deg) scale(1.1, 0.88);
+  }
+  100% {
+    transform: translateX(calc(-50% + 0.5px)) translateY(0) rotate(360deg) scale(1, 1);
+  }
+}
+
+.logo-flip {
+  z-index: 2;
+  animation: lit-flip-header 1150ms cubic-bezier(0.4, 0.02, 0.5, 0.98) 620ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-flip {
+    animation: none;
+  }
+}
+
 .animate-lit-in {
   animation: lit-in 0.3s ease both;
 }
