@@ -14,6 +14,17 @@ Everything below is new in this round. Specs are given at the prototype's own sc
 > same ~1:4 scale ratio as the rest of the mark) per direct product feedback.
 > `LOGO.md`'s own bottom values now read low by that same amount; the numbers
 > below and in `prototype-reference.html` reflect what's actually shipped.
+>
+> **Second correction (2026-09):** the `17→19` / `86→94` adjustment above moved
+> both marks by the same scaled *delta*, which preserved a proportional
+> mismatch that already existed between them rather than fixing it. Measured
+> directly against the DOM: the splash's gap above the stem is 94 of the
+> character's 138px line-box height (a 0.68 ratio); the header's was 19 of
+> 34.5px (a 0.55 ratio) — visibly lower relative to its own scale, confirmed
+> against a screenshot of the live header. The header's `bottom` is now
+> `23.5px`, which reproduces the splash's exact ratio at the header's size.
+> Splash is unchanged. This is the number that's actually shipped; `LOGO.md`
+> still reads `17px` and is left as the untouched historical handoff copy.
 
 The wordmark is now `L` + a **dotless i** (`ı`, U+0131) + `tmus`, with a small
 conical-flask glyph standing in for the i's tittle.

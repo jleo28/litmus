@@ -26,7 +26,7 @@ export default function Header() {
             fontSize={23}
             flaskSize={4}
             flaskStrokeWidth={3.4}
-            flaskBottom={19}
+            flaskBottom={23.5}
             flaskClassName="logo-flip"
           />
         </Link>
