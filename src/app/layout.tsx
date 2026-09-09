@@ -37,7 +37,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-page font-sans text-ink antialiased">
         <SplashScreen />
         <Header />
-        <main className="flex-1 w-full max-w-[1280px] mx-auto px-14">
+        <main className="flex-1 w-full max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-14">
           {children}
         </main>
         <Footer />

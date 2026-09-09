@@ -41,7 +41,7 @@ export default function ResultsScreen() {
   const drafts = buildDrafts(result.fields, result.standing, result.checks, result.docType);
 
   return (
-    <div className="pt-11 pb-12 grid grid-cols-[minmax(0,1fr)_296px] gap-14 items-start animate-lit-in">
+    <div className="pt-11 pb-12 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_296px] gap-8 lg:gap-14 items-start animate-lit-in">
       <div className="min-w-0">
         <SummaryBar checks={result.checks} docType={result.docType} employer={result.fields.employer} />
 

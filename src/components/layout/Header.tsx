@@ -15,7 +15,7 @@ export default function Header() {
       data-noprint="1"
       className="border-b border-[rgba(28,27,25,.09)] bg-surface-raised"
     >
-      <div className="max-w-[1280px] mx-auto px-14 h-[62px] flex items-center gap-7">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-14 h-[62px] flex items-center gap-4 sm:gap-7">
         <Link
           href="/"
           title="Back to home"
@@ -30,7 +30,7 @@ export default function Header() {
             flaskClassName="logo-flip"
           />
         </Link>
-        <nav className="ml-auto flex items-center gap-[22px]">
+        <nav className="ml-auto flex items-center gap-3 sm:gap-[22px]">
           {pathname !== "/tracker" && pathname !== "/" && (
             <Link
               href="/tracker"

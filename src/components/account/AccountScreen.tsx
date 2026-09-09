@@ -116,7 +116,7 @@ export default function AccountScreen() {
       </p>
 
       <div className="bg-surface-raised border border-[rgba(28,27,25,.1)] rounded-[6px] overflow-hidden">
-        <div className="grid grid-cols-[104px_minmax(0,1fr)] gap-[18px] px-5 py-4 border-b border-[rgba(28,27,25,.08)]">
+        <div className="grid grid-cols-1 sm:grid-cols-[104px_minmax(0,1fr)] gap-1.5 sm:gap-[18px] px-4 sm:px-5 py-4 border-b border-[rgba(28,27,25,.08)]">
           <div className="font-sans font-semibold text-[10px] tracking-[.06em] uppercase text-faint pt-1.5">
             Email
           </div>
@@ -147,7 +147,7 @@ export default function AccountScreen() {
           )}
         </div>
 
-        <div className="grid grid-cols-[104px_minmax(0,1fr)] gap-[18px] px-5 py-4 border-b border-[rgba(28,27,25,.08)]">
+        <div className="grid grid-cols-1 sm:grid-cols-[104px_minmax(0,1fr)] gap-1.5 sm:gap-[18px] px-4 sm:px-5 py-4 border-b border-[rgba(28,27,25,.08)]">
           <div className="font-sans font-semibold text-[10px] tracking-[.06em] uppercase text-faint pt-1.5">
             Username
           </div>
@@ -178,7 +178,7 @@ export default function AccountScreen() {
           )}
         </div>
 
-        <div className="grid grid-cols-[104px_minmax(0,1fr)] gap-[18px] px-5 py-4">
+        <div className="grid grid-cols-1 sm:grid-cols-[104px_minmax(0,1fr)] gap-1.5 sm:gap-[18px] px-4 sm:px-5 py-4">
           <div className="font-sans font-semibold text-[10px] tracking-[.06em] uppercase text-faint pt-1.5">
             Password
           </div>

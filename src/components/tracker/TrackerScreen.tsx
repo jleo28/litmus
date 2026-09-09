@@ -95,7 +95,7 @@ export default function TrackerScreen() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
         {TRACKER_COLUMNS.map((col) => {
           const cards = checks.filter((c) => c.column === col.key);
           return (

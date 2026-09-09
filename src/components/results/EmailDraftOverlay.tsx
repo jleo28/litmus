@@ -23,7 +23,7 @@ export default function EmailDraftOverlay({ drafts, initialIndex, onClose }: Ema
   return (
     <div
       data-noprint="1"
-      className="fixed inset-0 z-40 bg-[rgba(28,27,25,.42)] flex items-center justify-center p-10"
+      className="fixed inset-0 z-40 bg-[rgba(28,27,25,.42)] flex items-center justify-center p-4 sm:p-10"
     >
       <div onClick={onClose} className="absolute inset-0" />
       <div className="relative w-full max-w-[760px] max-h-[86vh] overflow-auto bg-surface-input border border-[rgba(28,27,25,.16)] rounded-[8px] shadow-[0_24px_60px_rgba(28,27,25,.28)] animate-lit-pop">

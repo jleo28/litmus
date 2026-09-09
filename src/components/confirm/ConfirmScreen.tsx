@@ -72,11 +72,11 @@ export default function ConfirmScreen() {
   }
 
   return (
-    <div className="py-[52px] pb-12 max-w-[820px] animate-lit-in">
+    <div className="py-8 sm:py-[52px] pb-12 max-w-[820px] animate-lit-in">
       <div className="font-sans font-semibold text-[10px] tracking-[.09em] uppercase text-faint mb-2.5">
         Step 2 of 3
       </div>
-      <h1 className="font-serif text-[34px] leading-[1.15] font-normal tracking-[-0.02em] mb-3">
+      <h1 className="font-serif text-[26px] sm:text-[34px] leading-[1.15] font-normal tracking-[-0.02em] mb-3">
         {isLetter ? "Here's what I pulled from your offer letter." : "Here's what I pulled from the listing."}
       </h1>
       <p className="text-[15px] leading-[1.55] text-body-muted mb-5 max-w-[56ch]">
@@ -117,7 +117,7 @@ export default function ConfirmScreen() {
           return (
             <div
               key={def.key}
-              className={`grid grid-cols-[210px_minmax(0,1fr)] gap-6 items-center px-6 py-[17px] ${
+              className={`grid grid-cols-1 sm:grid-cols-[210px_minmax(0,1fr)] gap-1.5 sm:gap-6 sm:items-center px-4 sm:px-6 py-[17px] ${
                 i < FIELD_DEFS.length - 1 ? "border-b border-[rgba(28,27,25,.07)]" : ""
               }`}
             >
