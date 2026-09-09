@@ -85,12 +85,12 @@ export default function PasteScreen() {
   }
 
   return (
-    <div className="py-16 pb-12 grid grid-cols-[minmax(0,1fr)_316px] gap-16 items-start animate-lit-in">
+    <div className="py-10 sm:py-16 pb-12 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_316px] gap-8 lg:gap-16 items-start animate-lit-in">
       <div className="min-w-0">
-        <h1 className="font-serif text-[44px] leading-[1.12] font-normal tracking-[-0.02em] mb-3.5">
+        <h1 className="font-serif text-[32px] sm:text-[38px] lg:text-[44px] leading-[1.12] font-normal tracking-[-0.02em] mb-3.5">
           Check an offer against
           <br />
-          <span className="whitespace-nowrap">
+          <span className="whitespace-normal lg:whitespace-nowrap">
             <SchoolWordCycle /> CPT rules.
           </span>
         </h1>

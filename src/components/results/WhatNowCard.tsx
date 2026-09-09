@@ -21,7 +21,7 @@ export default function WhatNowCard({ content, onOpenDraft }: WhatNowCardProps) 
         {content.steps.map((step, i) => (
           <div
             key={step.title}
-            className="grid grid-cols-[26px_minmax(0,1fr)_auto] gap-4 items-center px-6 py-4 border-b border-[rgba(28,27,25,.06)]"
+            className="grid grid-cols-[26px_minmax(0,1fr)] sm:grid-cols-[26px_minmax(0,1fr)_auto] gap-x-4 gap-y-2.5 items-start sm:items-center px-4 sm:px-6 py-4 border-b border-[rgba(28,27,25,.06)]"
           >
             <span className="font-sans font-semibold text-[10.5px] text-faintest">
               {String(i + 1).padStart(2, "0")}
@@ -36,7 +36,7 @@ export default function WhatNowCard({ content, onOpenDraft }: WhatNowCardProps) 
                   if (step.print) window.print();
                   else if (step.openDraftIndex !== undefined) onOpenDraft(step.openDraftIndex);
                 }}
-                className="whitespace-nowrap px-[15px] py-[9px] text-[12.5px] font-medium rounded-[4px] cursor-pointer bg-ink text-[#fbfaf8] border border-ink hover:bg-[#332f2a]"
+                className="col-span-2 sm:col-span-1 justify-self-start whitespace-nowrap px-[15px] py-[9px] text-[12.5px] font-medium rounded-[4px] cursor-pointer bg-ink text-[#fbfaf8] border border-ink hover:bg-[#332f2a]"
               >
                 {step.action}
               </button>

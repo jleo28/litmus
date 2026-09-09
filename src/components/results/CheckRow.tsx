@@ -17,10 +17,10 @@ export default function CheckRow({ check, index, offerColLabel, open, onToggle }
 
   return (
     <div
-      className="px-5 py-6 -mx-5 border-b border-[rgba(28,27,25,.08)]"
+      className="px-3 sm:px-5 py-6 -mx-3 sm:-mx-5 border-b border-[rgba(28,27,25,.08)]"
       style={{ background: style.rowTint }}
     >
-      <div className="grid grid-cols-[96px_minmax(0,1fr)] gap-[22px] items-start">
+      <div className="grid grid-cols-[64px_minmax(0,1fr)] sm:grid-cols-[96px_minmax(0,1fr)] gap-3 sm:gap-[22px] items-start">
         <div className="flex flex-col gap-[7px] pt-[3px]">
           <span
             className="font-sans font-semibold text-[9.5px] tracking-[.11em] uppercase text-center py-1 rounded-[3px]"

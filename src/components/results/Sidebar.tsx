@@ -45,7 +45,7 @@ export default function Sidebar({ result }: SidebarProps) {
   }
 
   return (
-    <aside className="flex flex-col gap-3.5 sticky top-6">
+    <aside className="flex flex-col gap-3.5 lg:sticky lg:top-6">
       <div data-noprint="1" className="bg-surface-raised border border-[rgba(28,27,25,.1)] rounded-[6px] p-5">
         <div className="font-sans font-semibold text-[10px] tracking-[.09em] uppercase text-faint mb-3.5">
           Keep a record

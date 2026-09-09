@@ -47,7 +47,7 @@ export default function SigninScreen() {
   }
 
   return (
-    <div className="pt-[78px] pb-16 grid grid-cols-[minmax(0,1fr)_380px] gap-[72px] items-start animate-lit-in">
+    <div className="pt-10 sm:pt-[78px] pb-16 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-8 lg:gap-[72px] items-start animate-lit-in">
       <div className="min-w-0 max-w-[52ch]">
         <div className="font-sans font-semibold text-[10px] tracking-[.09em] uppercase text-faint mb-3.5">
           Optional, and only for this
