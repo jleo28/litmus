@@ -222,15 +222,22 @@ body {
   box-sizing: border-box;
 }
 
-a {
-  color: var(--color-accent);
-  text-decoration: none;
-  border-bottom: 1px solid oklch(0.48 0.075 250 / 0.3);
-}
+/* In @layer base so Tailwind utilities (a later layer) can override these
+   defaults on a per-link basis without needing `!important`. Unlayered CSS
+   always wins over layered CSS regardless of specificity, which is what let
+   this accent color silently beat utility classes like `text-[#fbfaf8]` on
+   links that need a different color (e.g. white text on a dark button). */
+@layer base {
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid oklch(0.48 0.075 250 / 0.3);
+  }
 
-a:hover {
-  color: var(--color-accent-hover);
-  border-bottom-color: oklch(0.38 0.085 250 / 0.6);
+  a:hover {
+    color: var(--color-accent-hover);
+    border-bottom-color: oklch(0.38 0.085 250 / 0.6);
+  }
 }
 
 button,

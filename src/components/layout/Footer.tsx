@@ -13,14 +13,8 @@ export default function Footer() {
           href="/rulebook"
           className="ml-auto !border-0 text-[12.5px] text-muted transition-colors duration-[180ms] ease hover:text-ink"
         >
-          What we check against
+          Rule Database
         </Link>
-        <span
-          data-noprint="1"
-          className="font-sans font-semibold text-[10px] text-faintest"
-        >
-          Litmus v1
-        </span>
       </div>
     </footer>
   );
