@@ -20,6 +20,9 @@ export default function PasteScreen() {
   const setRaw = useAppStore((s) => s.setRaw);
   const setFields = useAppStore((s) => s.setFields);
   const setDocType = useAppStore((s) => s.setDocType);
+  const setLevel = useAppStore((s) => s.setLevel);
+  const setYear = useAppStore((s) => s.setYear);
+  const setFinalSemester = useAppStore((s) => s.setFinalSemester);
 
   const [checking, setChecking] = useState(false);
   const [uploadNote, setUploadNote] = useState("");
@@ -42,6 +45,13 @@ export default function PasteScreen() {
     } else {
       setChecking(true);
     }
+  }
+
+  function applySample(sample: (typeof SAMPLES)[number]) {
+    setRaw(sample.raw);
+    setLevel(sample.standing.level);
+    setYear(sample.standing.year);
+    setFinalSemester(sample.standing.finalSemester);
   }
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -141,7 +151,7 @@ export default function PasteScreen() {
             {SAMPLES.map((s) => (
               <button
                 key={s.id}
-                onClick={() => setRaw(s.raw)}
+                onClick={() => applySample(s)}
                 className="bg-transparent border-0 p-0 text-[12.5px] text-accent border-b border-[oklch(0.48_0.075_250_/_0.3)] cursor-pointer hover:text-accent-hover"
               >
                 {s.label}
