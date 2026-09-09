@@ -64,7 +64,7 @@ export default function TrackerScreen() {
       <div className="flex items-end gap-7 flex-wrap mb-[26px]">
         <div className="min-w-0">
           <div className="font-sans font-semibold text-[10px] tracking-[.09em] uppercase text-faint mb-3">
-            Your checks
+            My Tracker
           </div>
           <h1 className="font-serif text-[34px] leading-[1.15] font-normal tracking-[-0.02em] mb-2">
             {board === "jd" ? "Listings you're considering" : "Offers you've received"}

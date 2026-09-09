@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="border-t border-[rgba(28,27,25,.09)] bg-surface-raised mt-auto">
@@ -7,9 +9,15 @@ export default function Footer() {
           rules. It is not an eligibility decision, confirm with OIS before
           acting.
         </span>
+        <Link
+          href="/rulebook"
+          className="ml-auto !border-0 text-[12.5px] text-muted transition-colors duration-[180ms] ease hover:text-ink"
+        >
+          What we check against
+        </Link>
         <span
           data-noprint="1"
-          className="ml-auto font-sans font-semibold text-[10px] text-faintest"
+          className="font-sans font-semibold text-[10px] text-faintest"
         >
           Litmus v1
         </span>

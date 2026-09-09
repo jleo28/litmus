@@ -8,6 +8,7 @@ interface LitmusWordmarkProps {
   flaskBottom: number;
   flaskTranslateX?: string;
   flaskStyle?: CSSProperties;
+  flaskClassName?: string;
   style?: CSSProperties;
   className?: string;
 }
@@ -21,6 +22,7 @@ export default function LitmusWordmark({
   flaskBottom,
   flaskTranslateX = "calc(-50% + 0.5px)",
   flaskStyle,
+  flaskClassName = "",
   style,
   className = "",
 }: LitmusWordmarkProps) {
@@ -33,13 +35,14 @@ export default function LitmusWordmark({
       <span className="relative inline-block">
         ı
         <span
-          className="absolute left-1/2 flex items-end justify-center leading-none"
+          className={`absolute left-1/2 flex items-end justify-center ${flaskClassName}`}
           style={{
             bottom: flaskBottom,
             width: flaskSize,
             height: flaskSize,
             transform: `translateX(${flaskTranslateX})`,
             transformOrigin: "50% 100%",
+            lineHeight: 0,
             ...flaskStyle,
           }}
         >

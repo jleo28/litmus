@@ -14,6 +14,7 @@ export default function FlaskGlyph({ size, strokeWidth }: FlaskGlyphProps) {
       strokeWidth={strokeWidth}
       strokeLinejoin="round"
       strokeLinecap="round"
+      aria-hidden="true"
     >
       <path
         d="M7.4 14.6h9.2l2.6 4.8a1.7 1.7 0 0 1-1.5 2.5H6.3a1.7 1.7 0 0 1-1.5-2.5z"
