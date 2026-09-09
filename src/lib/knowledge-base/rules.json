@@ -1,0 +1,195 @@
+{
+  "schema": 1,
+  "note": "Canonical Litmus ruleset. Admin-only. Append via the workflow in INGEST.md. The inline KB mirror in Litmus.dc.html must be regenerated whenever this file changes.",
+  "schools": [
+    {
+      "id": "usc",
+      "name": "University of Southern California",
+      "short": "USC",
+      "domains": ["usc.edu"],
+      "office": "Office of International Services (OIS)",
+      "ruleCount": 13,
+      "coverage": {
+        "confident": ["Curricular Practical Training (CPT)"],
+        "gaps": [
+          "Whether practical training is a degree requirement for your program: the rule is on file and it decides CPT eligibility outright, but only your department and OIS can confirm it for your curriculum",
+          "Fixed periods of admission replacing duration of status from September 15, 2026",
+          "Optional Practical Training (OPT) and the 24-month STEM extension",
+          "On-campus employment limits",
+          "Unpaid internships and volunteer work",
+          "J-1 academic training"
+        ],
+        "note": "Litmus only checks the rules listed for this school and nothing else. A quiet result means no conflict was found in what is on file, not that nothing is wrong. The gap list covers both rules we have not recorded and rules we have recorded but cannot check from a document. Silence is not approval."
+      },
+      "rules": [
+        {
+          "id": "usc-degree-requirement",
+          "category": "Eligibility",
+          "severity": "blocker",
+          "summary": "CPT is only authorized when practical training is required to graduate from your program, not when it hangs off an elective.",
+          "quote": "In accordance with this guidance, effective August 24, CPT requests will only be authorized when practical training is a degree requirement for graduation.",
+          "cite": "OIS · Important update regarding Curricular Practical Training",
+          "url": "https://ois.usc.edu/important-update-regarding-curricular-practical-training/",
+          "effective": "2026-08-24",
+          "verified": "2026-09-03",
+          "context": "Follows SEVP Broadcast Message 2608-02 of August 24, 2026, which states that CPT must be an integral and required part of an established curriculum applying to all students in the program. Fall 2026 authorizations issued before August 24 are not rescinded.",
+          "caveat": "Litmus cannot check this from a listing or an offer letter. Whether practical training is required for your degree depends on your program's curriculum, so this one is on you to confirm with your department and OIS.",
+          "powers": []
+        },
+        {
+          "id": "usc-term-dates",
+          "category": "Timing",
+          "severity": "blocker",
+          "summary": "CPT is authorized one term at a time and cannot start before the term starts or run past its end.",
+          "quote": "CPT authorization is granted per academic term and may not begin before the first day of that term or extend past its last day.",
+          "cite": "OIS · Employment › CPT › Authorization periods",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["CPT term"]
+        },
+        {
+          "id": "usc-auth-start",
+          "category": "Timing",
+          "severity": "blocker",
+          "summary": "You cannot work a single day before the start date printed on your CPT I-20.",
+          "quote": "You may not begin working until the start date printed on your CPT I-20. Work performed before that date is unauthorized employment.",
+          "cite": "OIS · Employment › CPT › Before you start",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["Start-date gap"]
+        },
+        {
+          "id": "usc-deadlines",
+          "category": "Timing",
+          "severity": "blocker",
+          "summary": "Requests are due at least 10 business days before the term begins; late ones roll to the next term.",
+          "quote": "CPT requests must be submitted at least 10 business days before the term begins. Requests received after the posted deadline are processed for the following term.",
+          "cite": "OIS · Employment › CPT › Deadlines",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["Application deadline"]
+        },
+        {
+          "id": "usc-hours",
+          "category": "Hours",
+          "severity": "blocker",
+          "summary": "20 hours a week during fall and spring. Full-time is allowed over the summer.",
+          "quote": "During fall and spring, CPT is limited to 20 hours per week. Full-time CPT is permitted during summer, and during a student's final semester when coursework is complete.",
+          "cite": "OIS · Employment › CPT › Part-time vs full-time",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["Weekly hours"]
+        },
+        {
+          "id": "usc-final-semester",
+          "category": "Hours",
+          "severity": "warning",
+          "summary": "In your final semester, with coursework complete, full-time CPT can be approved during the term.",
+          "quote": "A student in their final semester who has completed all coursework may be authorized for full-time CPT, subject to advisor confirmation that no enrollment requirement remains.",
+          "cite": "OIS · Employment › CPT › Part-time vs full-time",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["Weekly hours"]
+        },
+        {
+          "id": "usc-commute-zone",
+          "category": "Location",
+          "severity": "blocker",
+          "summary": "The work site has to be a reasonable commute, generally Los Angeles, Orange or Ventura county.",
+          "quote": "The employment site must be within a reasonable commuting distance of the University Park or Health Sciences campus, generally Los Angeles, Orange and Ventura counties.",
+          "cite": "OIS · Employment › CPT › Work location",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["Work location"]
+        },
+        {
+          "id": "usc-remote",
+          "category": "Location",
+          "severity": "warning",
+          "summary": "Remote roles need a named supervisor and a physical site of record; fully remote is reviewed case by case.",
+          "quote": "Remote employment must have a documented supervisor and a physical work site of record. Fully remote arrangements are reviewed on a case-by-case basis.",
+          "cite": "OIS · Employment › CPT › Work location",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2025-08-01",
+          "verified": "2026-02-11",
+          "stale": true,
+          "staleNote": "Last confirmed over six months ago. Remote guidance changed twice in 2025, so treat this as indicative and confirm with OIS.",
+          "powers": ["Work location"]
+        },
+        {
+          "id": "usc-major-relation",
+          "category": "Documentation",
+          "severity": "blocker",
+          "summary": "The work must be directly related to your major and at your degree level.",
+          "quote": "The employment must be directly related to the student's major field of study and commensurate with the degree level.",
+          "cite": "OIS · Employment › CPT › Eligibility",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["Job description aligned to your major"]
+        },
+        {
+          "id": "usc-offer-letter",
+          "category": "Documentation",
+          "severity": "blocker",
+          "summary": "The letter needs letterhead, a signature, legal employer name, physical address, exact hours, and dates.",
+          "quote": "The offer letter must be printed on company letterhead and signed, and must state the employer's legal name, the physical work address, the exact number of weekly hours, and the start and end dates of employment.",
+          "cite": "OIS · Employment › CPT › Required documents",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["Employer legal name", "Physical work address", "Exact weekly hours", "Start and end dates", "Official letterhead + signature"]
+        },
+        {
+          "id": "usc-employer-change",
+          "category": "Documentation",
+          "severity": "warning",
+          "summary": "Each employer needs its own authorization, and changes to hours, dates or site need a new one.",
+          "quote": "A separate CPT authorization is required for each employer. Any change to the work location, weekly hours, or employment dates requires a new authorization before the change takes effect.",
+          "cite": "OIS · Employment › CPT › Changes to employment",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["CPT term"]
+        },
+        {
+          "id": "usc-enrollment-year",
+          "category": "Eligibility",
+          "severity": "blocker",
+          "summary": "You need one full academic year of full-time enrollment before you are eligible at all.",
+          "quote": "Students must have been enrolled full-time for one full academic year in F-1 status before becoming eligible for Curricular Practical Training.",
+          "cite": "OIS · Employment › CPT › Eligibility",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": []
+        },
+        {
+          "id": "usc-retroactive",
+          "category": "Eligibility",
+          "severity": "blocker",
+          "summary": "CPT is never granted after the fact. Unauthorized work is a status violation.",
+          "quote": "CPT cannot be authorized retroactively. Employment undertaken without prior authorization constitutes a violation of F-1 status and must be reported to the Office of International Services.",
+          "cite": "OIS · Employment › CPT › Before you start",
+          "url": "https://ois.usc.edu/employment/employment-f1/cpt/",
+          "effective": "2026-01-15",
+          "verified": "2026-08-28",
+          "powers": ["Start-date gap"]
+        }
+      ],
+      "changelog": [
+        { "date": "2026-09-03", "text": "Added the August 24 degree-requirement rule after SEVP Broadcast Message 2608-02. This is now the first thing that decides a CPT request, and Litmus cannot check it automatically." },
+        { "date": "2026-08-28", "text": "Re-confirmed all CPT timing, hours and documentation clauses against the OIS employment pages. No wording changes." },
+        { "date": "2026-06-04", "text": "Added the final-semester full-time provision as its own rule; it was previously folded into the hours limit." },
+        { "date": "2026-02-11", "text": "Remote-work guidance recorded from the OIS work-location page. Flagged for recheck." },
+        { "date": "2026-01-15", "text": "Initial USC ruleset built from the 2026 OIS CPT documentation." }
+      ]
+    }
+  ]
+}

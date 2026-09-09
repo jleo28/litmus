@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CheckResult, DocType } from "@/lib/types";
 import { summarizeChecks, buildSummaryLead } from "@/lib/checkFlow";
 
@@ -29,7 +30,7 @@ export default function SummaryBar({ checks, docType, employer }: SummaryBarProp
         <span className="text-[13.5px] leading-[1.55] text-body">
           This checks your offer against your school&apos;s published CPT rules.{" "}
           <strong className="font-semibold">It is not an eligibility decision</strong>, confirm with
-          OIS before acting.
+          OIS before acting. <Link href="/rulebook">Read the rules we checked</Link>
         </span>
       </div>
     </div>

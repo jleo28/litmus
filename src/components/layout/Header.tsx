@@ -15,10 +15,9 @@ export default function Header() {
   const pathname = usePathname();
   const { user } = useAuthUser();
   const signedIn = !!user;
-  const email = user?.email ?? "";
 
-  const showSteps = !["/signin", "/tracker"].includes(pathname);
   const activeIdx = STEPS.findIndex((s) => s.match(pathname));
+  const showSteps = activeIdx !== -1;
 
   return (
     <header
@@ -54,22 +53,22 @@ export default function Header() {
               ))}
             </div>
           )}
-          {signedIn && (
+          {pathname !== "/tracker" && (
             <Link
               href="/tracker"
-              className="font-sans font-semibold text-[10.5px] tracking-[.05em] uppercase whitespace-nowrap !border-0"
-              style={{
-                color: pathname === "/tracker" ? "#1c1b19" : "#b0ada6",
-              }}
+              className="!border-0 text-[12px] whitespace-nowrap transition-colors duration-[180ms] ease text-faintest hover:text-ink"
             >
-              Tracker
+              My Tracker
             </Link>
           )}
-          {signedIn && (
-            <span className="text-[12px] text-faintest whitespace-nowrap">
-              {email}
-            </span>
-          )}
+          <Link
+            href={signedIn ? "/account" : "/signin"}
+            className={`!border-0 text-[12px] whitespace-nowrap transition-colors duration-[180ms] ease hover:text-ink ${
+              pathname === "/account" ? "text-ink" : "text-faintest"
+            }`}
+          >
+            {signedIn ? "My Account" : "Sign In"}
+          </Link>
         </nav>
       </div>
     </header>
