@@ -5,19 +5,10 @@ import { usePathname } from "next/navigation";
 import { useAuthUser } from "@/lib/supabase/useAuthUser";
 import LitmusWordmark from "@/components/brand/LitmusWordmark";
 
-const STEPS: { label: string; match: (path: string) => boolean }[] = [
-  { label: "1 Paste", match: (p) => p === "/" },
-  { label: "2 Confirm", match: (p) => p === "/confirm" },
-  { label: "3 Results", match: (p) => p.startsWith("/results") },
-];
-
 export default function Header() {
   const pathname = usePathname();
   const { user } = useAuthUser();
   const signedIn = !!user;
-
-  const activeIdx = STEPS.findIndex((s) => s.match(pathname));
-  const showSteps = activeIdx !== -1;
 
   return (
     <header
@@ -40,20 +31,7 @@ export default function Header() {
           />
         </Link>
         <nav className="ml-auto flex items-center gap-[22px]">
-          {showSteps && (
-            <div className="flex items-center gap-[10px]">
-              {STEPS.map((step, i) => (
-                <span
-                  key={step.label}
-                  className="font-sans font-semibold text-[10.5px] tracking-[.05em] whitespace-nowrap"
-                  style={{ color: i === activeIdx ? "#1c1b19" : "#b0ada6" }}
-                >
-                  {step.label}
-                </span>
-              ))}
-            </div>
-          )}
-          {pathname !== "/tracker" && (
+          {pathname !== "/tracker" && pathname !== "/" && (
             <Link
               href="/tracker"
               className="!border-0 text-[12px] whitespace-nowrap transition-colors duration-[180ms] ease text-faintest hover:text-ink"
